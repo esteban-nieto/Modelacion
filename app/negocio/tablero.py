@@ -27,6 +27,6 @@ def proyectados(resultados):
         return None
     escenarios = resultados["escenarios"]
     return {
-        "base": escenarios["base"],
-        "recomendado": {"nombre": resultados["recomendado"], **escenarios[resultados["recomendado"]]},
+        "base": escenarios["base"]["metricas"],
+        "recomendado": {"nombre": resultados["recomendado"], **escenarios[resultados["recomendado"]]["metricas"]},
     }

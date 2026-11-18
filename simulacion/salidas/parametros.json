@@ -1,0 +1,71 @@
+{
+  "Enfermería y vacunación": {
+    "profesionales": 1,
+    "llegadas": {
+      "distribucion": "expon",
+      "parametros": [
+        0.0,
+        22.283356258596974
+      ],
+      "observaciones": 1454,
+      "media_muestral": 21.32639569991976
+    },
+    "servicio": {
+      "distribucion": "gamma",
+      "parametros": [
+        2.061461024686723,
+        0.0,
+        4.781487474532157
+      ],
+      "observaciones": 1454,
+      "media_muestral": 9.856850068775792
+    }
+  },
+  "Medicina general": {
+    "profesionales": 2,
+    "llegadas": {
+      "distribucion": "expon",
+      "parametros": [
+        0.0,
+        15.034802784222737
+      ],
+      "observaciones": 2155,
+      "media_muestral": 14.624822268739367
+    },
+    "servicio": {
+      "distribucion": "lognorm",
+      "parametros": [
+        0.49825258957583873,
+        0.0,
+        17.640388111656886
+      ],
+      "observaciones": 2155,
+      "media_muestral": 19.99567053364269
+    }
+  },
+  "Odontología": {
+    "profesionales": 1,
+    "llegadas": {
+      "distribucion": "expon",
+      "parametros": [
+        0.0,
+        50.07727975270479
+      ],
+      "observaciones": 647,
+      "media_muestral": 45.97697231749098
+    },
+    "servicio": {
+      "distribucion": "weibull_min",
+      "parametros": [
+        2.555007124534077,
+        0.0,
+        34.94824596653504
+      ],
+      "observaciones": 647,
+      "media_muestral": 30.995857805255024
+    }
+  },
+  "_global": {
+    "fraccion_prioritaria": 0.125
+  }
+}
