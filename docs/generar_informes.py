@@ -266,7 +266,7 @@ def informe_b():
     figura(doc, SALIDAS / "monte_carlo_histograma.png", 6.0, "Figura 6. Distribución de la espera media diaria")
     doc.add_paragraph(
         f"Interpretación: en el 90 % de las jornadas del sistema actual la espera media no supera {actual['p90']} minutos, frente a {propuesta['p90']} con fila única. "
-        "La cola larga de la distribución (percentil 99) proviene de las jornadas con ausencia de un profesional, por lo que la fila única no elimina el riesgo de las jornadas críticas; "
+        "La cola larga de la distribución (percentil 99) se asocia, según el diseño del ejercicio, con las jornadas en que falta un profesional (no se aisló su efecto por separado), por lo que la fila única no elimina el riesgo de las jornadas críticas; "
         "para esas jornadas se necesita un plan de reemplazo."
     )
 
