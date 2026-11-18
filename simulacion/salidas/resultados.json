@@ -1,0 +1,705 @@
+{
+  "configuracion": {
+    "replicas": 30,
+    "jornadas_por_replica": 20,
+    "calentamiento_min": 0,
+    "nivel_confianza": 0.95,
+    "semilla": 12345
+  },
+  "validacion": {
+    "dias_reales": 60,
+    "jornadas_simuladas": 400,
+    "espera_diaria_real_media": 14.985,
+    "espera_diaria_simulada_media": 16.388,
+    "welch_t_p": 0.2098,
+    "ks_dos_muestras_p": 0.4347,
+    "mann_whitney_p": 0.2846,
+    "conclusion": "No se rechaza la igualdad entre el comportamiento real y el simulado (p > 0,05)"
+  },
+  "escenarios": {
+    "base": {
+      "descripcion": "Sistema actual: cada paciente queda en la fila de un profesional y se atiende en orden de llegada",
+      "tipo": "referencia",
+      "costo_extra": 0,
+      "metricas": {
+        "espera_media_min": {
+          "media": 16.443,
+          "ic_inf": 15.69,
+          "ic_sup": 17.195
+        },
+        "espera_prioritarios_min": {
+          "media": 15.952,
+          "ic_inf": 14.932,
+          "ic_sup": 16.973
+        },
+        "espera_p90_min": {
+          "media": 50.197,
+          "ic_inf": 47.944,
+          "ic_sup": 52.45
+        },
+        "ocupacion_pct": {
+          "media": 60.328,
+          "ic_inf": 59.555,
+          "ic_sup": 61.101
+        },
+        "citas_por_dia": {
+          "media": 71.75,
+          "ic_inf": 71.145,
+          "ic_sup": 72.355
+        },
+        "espera_Enfermería y vacunación": {
+          "media": 5.78,
+          "ic_inf": 5.367,
+          "ic_sup": 6.194
+        },
+        "ocupacion_Enfermería y vacunación": {
+          "media": 44.608,
+          "ic_inf": 43.805,
+          "ic_sup": 45.411
+        },
+        "espera_Medicina general": {
+          "media": 20.925,
+          "ic_inf": 19.63,
+          "ic_sup": 22.22
+        },
+        "ocupacion_Medicina general": {
+          "media": 66.604,
+          "ic_inf": 65.483,
+          "ic_sup": 67.725
+        },
+        "espera_Odontología": {
+          "media": 24.951,
+          "ic_inf": 23.156,
+          "ic_sup": 26.745
+        },
+        "ocupacion_Odontología": {
+          "media": 63.497,
+          "ic_inf": 61.737,
+          "ic_sup": 65.257
+        }
+      },
+      "diferencia_vs_base": {}
+    },
+    "cola_unica": {
+      "descripcion": "Una sola fila por servicio: el siguiente paciente lo atiende el primer profesional libre",
+      "tipo": "mejora",
+      "costo_extra": 0,
+      "metricas": {
+        "espera_media_min": {
+          "media": 9.825,
+          "ic_inf": 9.332,
+          "ic_sup": 10.317
+        },
+        "espera_prioritarios_min": {
+          "media": 10.02,
+          "ic_inf": 9.524,
+          "ic_sup": 10.515
+        },
+        "espera_p90_min": {
+          "media": 29.723,
+          "ic_inf": 28.375,
+          "ic_sup": 31.071
+        },
+        "ocupacion_pct": {
+          "media": 59.231,
+          "ic_inf": 58.54,
+          "ic_sup": 59.922
+        },
+        "citas_por_dia": {
+          "media": 70.472,
+          "ic_inf": 69.904,
+          "ic_sup": 71.039
+        },
+        "espera_Enfermería y vacunación": {
+          "media": 5.562,
+          "ic_inf": 5.185,
+          "ic_sup": 5.938
+        },
+        "ocupacion_Enfermería y vacunación": {
+          "media": 44.12,
+          "ic_inf": 43.205,
+          "ic_sup": 45.034
+        },
+        "espera_Medicina general": {
+          "media": 8.152,
+          "ic_inf": 7.561,
+          "ic_sup": 8.744
+        },
+        "ocupacion_Medicina general": {
+          "media": 65.508,
+          "ic_inf": 64.511,
+          "ic_sup": 66.505
+        },
+        "espera_Odontología": {
+          "media": 24.685,
+          "ic_inf": 22.581,
+          "ic_sup": 26.79
+        },
+        "ocupacion_Odontología": {
+          "media": 61.788,
+          "ic_inf": 59.877,
+          "ic_sup": 63.699
+        }
+      },
+      "diferencia_vs_base": {
+        "espera_media_min": {
+          "media": -6.618,
+          "ic_inf": -7.558,
+          "ic_sup": -5.678
+        },
+        "espera_prioritarios_min": {
+          "media": -5.933,
+          "ic_inf": -7.251,
+          "ic_sup": -4.614
+        },
+        "espera_p90_min": {
+          "media": -20.474,
+          "ic_inf": -23.202,
+          "ic_sup": -17.747
+        },
+        "ocupacion_pct": {
+          "media": -1.097,
+          "ic_inf": -2.18,
+          "ic_sup": -0.015
+        },
+        "citas_por_dia": {
+          "media": -1.278,
+          "ic_inf": -2.112,
+          "ic_sup": -0.445
+        }
+      }
+    },
+    "cola_unica_prioridad": {
+      "descripcion": "Fila única con prioridad para pacientes prioritarios",
+      "tipo": "mejora",
+      "costo_extra": 0,
+      "metricas": {
+        "espera_media_min": {
+          "media": 9.825,
+          "ic_inf": 9.332,
+          "ic_sup": 10.317
+        },
+        "espera_prioritarios_min": {
+          "media": 4.923,
+          "ic_inf": 4.675,
+          "ic_sup": 5.171
+        },
+        "espera_p90_min": {
+          "media": 29.56,
+          "ic_inf": 28.184,
+          "ic_sup": 30.937
+        },
+        "ocupacion_pct": {
+          "media": 59.231,
+          "ic_inf": 58.54,
+          "ic_sup": 59.922
+        },
+        "citas_por_dia": {
+          "media": 70.472,
+          "ic_inf": 69.904,
+          "ic_sup": 71.039
+        },
+        "espera_Enfermería y vacunación": {
+          "media": 5.562,
+          "ic_inf": 5.185,
+          "ic_sup": 5.938
+        },
+        "ocupacion_Enfermería y vacunación": {
+          "media": 44.12,
+          "ic_inf": 43.205,
+          "ic_sup": 45.034
+        },
+        "espera_Medicina general": {
+          "media": 8.152,
+          "ic_inf": 7.561,
+          "ic_sup": 8.744
+        },
+        "ocupacion_Medicina general": {
+          "media": 65.508,
+          "ic_inf": 64.511,
+          "ic_sup": 66.505
+        },
+        "espera_Odontología": {
+          "media": 24.685,
+          "ic_inf": 22.581,
+          "ic_sup": 26.79
+        },
+        "ocupacion_Odontología": {
+          "media": 61.788,
+          "ic_inf": 59.877,
+          "ic_sup": 63.699
+        }
+      },
+      "diferencia_vs_base": {
+        "espera_media_min": {
+          "media": -6.618,
+          "ic_inf": -7.558,
+          "ic_sup": -5.678
+        },
+        "espera_prioritarios_min": {
+          "media": -11.029,
+          "ic_inf": -12.134,
+          "ic_sup": -9.924
+        },
+        "espera_p90_min": {
+          "media": -20.637,
+          "ic_inf": -23.396,
+          "ic_sup": -17.878
+        },
+        "ocupacion_pct": {
+          "media": -1.097,
+          "ic_inf": -2.18,
+          "ic_sup": -0.015
+        },
+        "citas_por_dia": {
+          "media": -1.278,
+          "ic_inf": -2.112,
+          "ic_sup": -0.445
+        }
+      }
+    },
+    "medico_adicional": {
+      "descripcion": "Se contrata un médico general adicional manteniendo filas por profesional",
+      "tipo": "mejora",
+      "costo_extra": 1,
+      "metricas": {
+        "espera_media_min": {
+          "media": 10.6,
+          "ic_inf": 10.137,
+          "ic_sup": 11.063
+        },
+        "espera_prioritarios_min": {
+          "media": 9.979,
+          "ic_inf": 9.247,
+          "ic_sup": 10.711
+        },
+        "espera_p90_min": {
+          "media": 33.57,
+          "ic_inf": 32.378,
+          "ic_sup": 34.762
+        },
+        "ocupacion_pct": {
+          "media": 48.263,
+          "ic_inf": 47.644,
+          "ic_sup": 48.881
+        },
+        "citas_por_dia": {
+          "media": 71.75,
+          "ic_inf": 71.145,
+          "ic_sup": 72.355
+        },
+        "espera_Enfermería y vacunación": {
+          "media": 5.78,
+          "ic_inf": 5.367,
+          "ic_sup": 6.194
+        },
+        "ocupacion_Enfermería y vacunación": {
+          "media": 44.608,
+          "ic_inf": 43.805,
+          "ic_sup": 45.411
+        },
+        "espera_Medicina general": {
+          "media": 9.387,
+          "ic_inf": 8.819,
+          "ic_sup": 9.955
+        },
+        "ocupacion_Medicina general": {
+          "media": 44.403,
+          "ic_inf": 43.655,
+          "ic_sup": 45.15
+        },
+        "espera_Odontología": {
+          "media": 24.951,
+          "ic_inf": 23.156,
+          "ic_sup": 26.745
+        },
+        "ocupacion_Odontología": {
+          "media": 63.497,
+          "ic_inf": 61.737,
+          "ic_sup": 65.257
+        }
+      },
+      "diferencia_vs_base": {
+        "espera_media_min": {
+          "media": -5.842,
+          "ic_inf": -6.335,
+          "ic_sup": -5.35
+        },
+        "espera_prioritarios_min": {
+          "media": -5.973,
+          "ic_inf": -6.568,
+          "ic_sup": -5.379
+        },
+        "espera_p90_min": {
+          "media": -16.627,
+          "ic_inf": -18.382,
+          "ic_sup": -14.873
+        },
+        "ocupacion_pct": {
+          "media": -12.066,
+          "ic_inf": -12.22,
+          "ic_sup": -11.911
+        },
+        "citas_por_dia": {
+          "media": 0.0,
+          "ic_inf": 0.0,
+          "ic_sup": 0.0
+        }
+      }
+    },
+    "demanda_mas_25": {
+      "descripcion": "Aumento de la demanda del 25 % con el sistema actual",
+      "tipo": "estres",
+      "costo_extra": 0,
+      "metricas": {
+        "espera_media_min": {
+          "media": 26.734,
+          "ic_inf": 25.576,
+          "ic_sup": 27.893
+        },
+        "espera_prioritarios_min": {
+          "media": 26.882,
+          "ic_inf": 25.346,
+          "ic_sup": 28.418
+        },
+        "espera_p90_min": {
+          "media": 76.713,
+          "ic_inf": 73.188,
+          "ic_sup": 80.239
+        },
+        "ocupacion_pct": {
+          "media": 74.78,
+          "ic_inf": 73.906,
+          "ic_sup": 75.655
+        },
+        "citas_por_dia": {
+          "media": 88.558,
+          "ic_inf": 87.822,
+          "ic_sup": 89.294
+        },
+        "espera_Enfermería y vacunación": {
+          "media": 8.566,
+          "ic_inf": 7.961,
+          "ic_sup": 9.172
+        },
+        "ocupacion_Enfermería y vacunación": {
+          "media": 55.564,
+          "ic_inf": 54.549,
+          "ic_sup": 56.578
+        },
+        "espera_Medicina general": {
+          "media": 35.822,
+          "ic_inf": 33.637,
+          "ic_sup": 38.007
+        },
+        "ocupacion_Medicina general": {
+          "media": 82.792,
+          "ic_inf": 81.651,
+          "ic_sup": 83.933
+        },
+        "espera_Odontología": {
+          "media": 36.716,
+          "ic_inf": 32.878,
+          "ic_sup": 40.554
+        },
+        "ocupacion_Odontología": {
+          "media": 77.973,
+          "ic_inf": 75.689,
+          "ic_sup": 80.257
+        }
+      },
+      "diferencia_vs_base": {
+        "espera_media_min": {
+          "media": 10.292,
+          "ic_inf": 8.794,
+          "ic_sup": 11.79
+        },
+        "espera_prioritarios_min": {
+          "media": 10.93,
+          "ic_inf": 8.933,
+          "ic_sup": 12.927
+        },
+        "espera_p90_min": {
+          "media": 26.516,
+          "ic_inf": 21.719,
+          "ic_sup": 31.313
+        },
+        "ocupacion_pct": {
+          "media": 14.452,
+          "ic_inf": 13.2,
+          "ic_sup": 15.704
+        },
+        "citas_por_dia": {
+          "media": 16.808,
+          "ic_inf": 15.772,
+          "ic_sup": 17.845
+        }
+      }
+    },
+    "demanda_mas_25_recomendado": {
+      "descripcion": "Aumento de la demanda del 25 % con fila única y prioridad",
+      "tipo": "estres",
+      "costo_extra": 0,
+      "metricas": {
+        "espera_media_min": {
+          "media": 18.268,
+          "ic_inf": 17.289,
+          "ic_sup": 19.247
+        },
+        "espera_prioritarios_min": {
+          "media": 6.13,
+          "ic_inf": 5.892,
+          "ic_sup": 6.367
+        },
+        "espera_p90_min": {
+          "media": 53.935,
+          "ic_inf": 50.61,
+          "ic_sup": 57.26
+        },
+        "ocupacion_pct": {
+          "media": 74.879,
+          "ic_inf": 74.097,
+          "ic_sup": 75.661
+        },
+        "citas_por_dia": {
+          "media": 88.835,
+          "ic_inf": 88.109,
+          "ic_sup": 89.561
+        },
+        "espera_Enfermería y vacunación": {
+          "media": 8.269,
+          "ic_inf": 7.592,
+          "ic_sup": 8.946
+        },
+        "ocupacion_Enfermería y vacunación": {
+          "media": 55.018,
+          "ic_inf": 53.993,
+          "ic_sup": 56.044
+        },
+        "espera_Medicina general": {
+          "media": 19.211,
+          "ic_inf": 17.596,
+          "ic_sup": 20.826
+        },
+        "ocupacion_Medicina general": {
+          "media": 83.165,
+          "ic_inf": 82.194,
+          "ic_sup": 84.135
+        },
+        "espera_Odontología": {
+          "media": 36.995,
+          "ic_inf": 34.619,
+          "ic_sup": 39.371
+        },
+        "ocupacion_Odontología": {
+          "media": 78.167,
+          "ic_inf": 76.554,
+          "ic_sup": 79.78
+        }
+      },
+      "diferencia_vs_base": {
+        "espera_media_min": {
+          "media": 1.826,
+          "ic_inf": 0.788,
+          "ic_sup": 2.863
+        },
+        "espera_prioritarios_min": {
+          "media": -9.823,
+          "ic_inf": -10.873,
+          "ic_sup": -8.772
+        },
+        "espera_p90_min": {
+          "media": 3.738,
+          "ic_inf": 0.147,
+          "ic_sup": 7.328
+        },
+        "ocupacion_pct": {
+          "media": 14.55,
+          "ic_inf": 13.6,
+          "ic_sup": 15.501
+        },
+        "citas_por_dia": {
+          "media": 17.085,
+          "ic_inf": 16.269,
+          "ic_sup": 17.901
+        }
+      }
+    }
+  },
+  "recomendado": "cola_unica_prioridad",
+  "cuellos_de_botella_ocupacion_pct": {
+    "Enfermería y vacunación": 44.608,
+    "Medicina general": 66.604,
+    "Odontología": 63.497
+  },
+  "sensibilidad": [
+    {
+      "escenario": "base",
+      "factor_demanda": 0.8,
+      "factor_servicio": 0.9,
+      "espera_media_min": 7.53,
+      "ocupacion_pct": 42.548
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 0.8,
+      "factor_servicio": 1.0,
+      "espera_media_min": 9.958,
+      "ocupacion_pct": 47.275
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 0.8,
+      "factor_servicio": 1.1,
+      "espera_media_min": 13.019,
+      "ocupacion_pct": 52.003
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.0,
+      "factor_servicio": 0.9,
+      "espera_media_min": 12.145,
+      "ocupacion_pct": 54.537
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.0,
+      "factor_servicio": 1.0,
+      "espera_media_min": 16.418,
+      "ocupacion_pct": 60.597
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.0,
+      "factor_servicio": 1.1,
+      "espera_media_min": 21.981,
+      "ocupacion_pct": 66.657
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.2,
+      "factor_servicio": 0.9,
+      "espera_media_min": 17.204,
+      "ocupacion_pct": 64.958
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.2,
+      "factor_servicio": 1.0,
+      "espera_media_min": 23.876,
+      "ocupacion_pct": 72.175
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.2,
+      "factor_servicio": 1.1,
+      "espera_media_min": 32.476,
+      "ocupacion_pct": 79.393
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.4,
+      "factor_servicio": 0.9,
+      "espera_media_min": 26.503,
+      "ocupacion_pct": 76.313
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.4,
+      "factor_servicio": 1.0,
+      "espera_media_min": 37.634,
+      "ocupacion_pct": 84.792
+    },
+    {
+      "escenario": "base",
+      "factor_demanda": 1.4,
+      "factor_servicio": 1.1,
+      "espera_media_min": 49.021,
+      "ocupacion_pct": 93.271
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 0.8,
+      "factor_servicio": 0.9,
+      "espera_media_min": 4.422,
+      "ocupacion_pct": 43.127
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 0.8,
+      "factor_servicio": 1.0,
+      "espera_media_min": 6.022,
+      "ocupacion_pct": 47.919
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 0.8,
+      "factor_servicio": 1.1,
+      "espera_media_min": 7.998,
+      "ocupacion_pct": 52.711
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.0,
+      "factor_servicio": 0.9,
+      "espera_media_min": 7.3,
+      "ocupacion_pct": 54.356
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.0,
+      "factor_servicio": 1.0,
+      "espera_media_min": 10.226,
+      "ocupacion_pct": 60.396
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.0,
+      "factor_servicio": 1.1,
+      "espera_media_min": 14.063,
+      "ocupacion_pct": 66.436
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.2,
+      "factor_servicio": 0.9,
+      "espera_media_min": 11.231,
+      "ocupacion_pct": 63.844
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.2,
+      "factor_servicio": 1.0,
+      "espera_media_min": 16.494,
+      "ocupacion_pct": 70.938
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.2,
+      "factor_servicio": 1.1,
+      "espera_media_min": 23.25,
+      "ocupacion_pct": 78.031
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.4,
+      "factor_servicio": 0.9,
+      "espera_media_min": 17.81,
+      "ocupacion_pct": 76.379
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.4,
+      "factor_servicio": 1.0,
+      "espera_media_min": 26.382,
+      "ocupacion_pct": 84.866
+    },
+    {
+      "escenario": "cola_unica_prioridad",
+      "factor_demanda": 1.4,
+      "factor_servicio": 1.1,
+      "espera_media_min": 37.708,
+      "ocupacion_pct": 93.352
+    }
+  ]
+}
