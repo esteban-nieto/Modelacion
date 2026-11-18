@@ -79,7 +79,7 @@ def test_proyectados_sin_resultados():
 
 
 def test_proyectados_con_recomendado():
-    resultados = {"escenarios": {"base": {"espera": 1}, "mejor": {"espera": 0.5}}, "recomendado": "mejor"}
+    resultados = {"escenarios": {"base": {"metricas": {"espera": 1}}, "mejor": {"metricas": {"espera": 0.5}}}, "recomendado": "mejor"}
     proyectado = tablero.proyectados(resultados)
     assert proyectado["recomendado"] == {"nombre": "mejor", "espera": 0.5}
 
