@@ -15,7 +15,7 @@ services:
   api:
     build: .
     environment:
-      DATABASE_URL: postgresql://turnos:${POSTGRES_PASSWORD}@base_datos:5432/turnos
+      DATABASE_URL: postgresql+psycopg2://turnos:${POSTGRES_PASSWORD}@base_datos:5432/turnos
       SECRET_KEY: ${SECRET_KEY:?defina SECRET_KEY}
       CLAVE_ADMIN: ${CLAVE_ADMIN:-Admin12345}
       CLAVE_OPERADOR: ${CLAVE_OPERADOR:-Operador12345}
