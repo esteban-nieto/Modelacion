@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turnos en puestos de salud rurales</title>
+  <link rel="stylesheet" href="/static/estilos.css">
+</head>
+<body>
+  <section id="vista-login" class="login">
+    <form id="form-login" class="tarjeta" novalidate>
+      <h1>Turnos de salud rural</h1>
+      <label>Correo
+        <input type="email" name="correo" required autocomplete="username">
+      </label>
+      <label>Clave
+        <input type="password" name="clave" required autocomplete="current-password">
+      </label>
+      <p id="error-login" class="error" role="alert"></p>
+      <button type="submit">Ingresar</button>
+    </form>
+  </section>
+
+  <div id="vista-app" hidden>
+    <header class="barra">
+      <strong>Turnos de salud rural</strong>
+      <nav id="menu" aria-label="Secciones"></nav>
+      <span id="usuario"></span>
+      <button id="salir" type="button" class="secundario">Salir</button>
+    </header>
+    <main>
+      <p id="mensaje" role="status"></p>
+      <section id="contenido"></section>
+    </main>
+  </div>
+
+  <dialog id="dialogo">
+    <form id="form-dialogo" method="dialog">
+      <h2 id="titulo-dialogo"></h2>
+      <div id="campos-dialogo"></div>
+      <p id="error-dialogo" class="error" role="alert"></p>
+      <div class="acciones">
+        <button type="button" id="cancelar-dialogo" class="secundario">Cancelar</button>
+        <button type="submit">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

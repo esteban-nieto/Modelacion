@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 
 from app.database import obtener_db
-from app.dependencias import usuario_actual
-from app.models import Usuario
-from app.schemas import LoginEntrada, LoginSalida, UsuarioSalida
+from app.dependencias import ADMIN, requiere_roles, usuario_actual
+from app.models import Rol, Usuario
+from app.schemas import LoginEntrada, LoginSalida, RolSalida, UsuarioSalida
 from app.seguridad import crear_token, verificar_clave
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
@@ -16,6 +16,11 @@ def iniciar_sesion(datos: LoginEntrada, db=Depends(obtener_db)):
     if usuario is None or not verificar_clave(datos.clave, usuario.clave_hash):
         raise HTTPException(401, "Correo o clave incorrectos")
     return LoginSalida(token=crear_token(usuario.id, usuario.rol.nombre), nombre=usuario.nombre, rol=usuario.rol.nombre)
+
+
+@router.get("/roles", response_model=list[RolSalida])
+def listar_roles(db=Depends(obtener_db), _=Depends(requiere_roles(*ADMIN))):
+    return db.scalars(select(Rol).order_by(Rol.id)).all()
 
 
 @router.get("/yo", response_model=UsuarioSalida)
