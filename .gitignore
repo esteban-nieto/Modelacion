@@ -9,3 +9,5 @@ htmlcov/
 Proyecto Modelacion*.pdf
 Taller*
 diagramas/turnos_flujos_niveles.py
+*.vdf
+*.vdfx
