@@ -92,6 +92,12 @@ def dias_habiles(cantidad):
         dia += timedelta(days=1)
 
 
+def base_con_datos():
+    Base.metadata.create_all(motor)
+    with Sesion() as db:
+        return db.scalar(select(Usuario.id).limit(1)) is not None
+
+
 def sembrar():
     Base.metadata.drop_all(motor)
     Base.metadata.create_all(motor)
@@ -104,7 +110,7 @@ def sembrar():
             db.add(
                 Usuario(
                     nombre=nombre.capitalize(),
-                    correo=f"{nombre}@turnos.local",
+                    correo=f"{nombre}@saludrural.co",
                     clave_hash=hashear_clave(CLAVES[nombre]),
                     rol_id=rol.id,
                 )
@@ -140,4 +146,7 @@ def sembrar():
 
 
 if __name__ == "__main__":
-    sembrar()
+    if "--forzar" not in sys.argv and base_con_datos():
+        print("La base ya tiene datos; use --forzar para reiniciarla")
+    else:
+        sembrar()
