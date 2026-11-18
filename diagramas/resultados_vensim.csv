@@ -1,0 +1,5 @@
+escenario,atendidos,abandonos,cola_maxima,espera_maxima_min,confianza_final
+Base,79.9,0.02,0.59,2.6,0.91
+Demanda +25 %,101.2,0.06,2.15,9.3,0.952
+Un profesional adicional,79.9,0.02,0.59,2.0,0.91
+Demanda +25 % y un profesional adicional,101.3,0.03,0.76,2.6,0.952
