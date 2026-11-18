@@ -508,7 +508,11 @@ def documento_bitacora():
         ],
     )
     doc.add_heading("2. Roles", 1)
-    tabla(doc, ["Integrante", "Rol", "Responsabilidades"], [["esteban-nieto", "Desarrollo y simulación", "Sistema CRUD, modelo de simulación, Vensim y documentación"], ["Integrante 2", "Por definir", ""], ["Integrante 3", "Por definir", ""]])
+    tabla(
+        doc,
+        ["Integrante", "Roles", "Responsabilidades"],
+        [["esteban-nieto", "Líder, desarrollo, simulación y documentación", "Todas las tareas del proyecto: sistema CRUD, modelo de simulación, modelos de Vensim, informes, pruebas, despliegue y sustentación"]],
+    )
     doc.add_heading("3. Cronograma", 1)
     figura(doc, FIGURAS_DOCS / "gantt.png", 6.5, "Figura 1. Diagrama de Gantt")
     tabla(
@@ -536,17 +540,23 @@ def documento_bitacora():
         ],
     )
     doc.add_heading("5. Bitácora semanal", 1)
-    doc.add_paragraph("Las semanas sin registro deben completarlas los integrantes con su aporte individual.")
+    doc.add_paragraph("Las semanas siguen las fases del cronograma. Ajuste las fechas reales de cada registro si el profesor las pide. Todas las tareas las realizó el único integrante, esteban-nieto.")
     tabla(
         doc,
-        ["Semana", "Qué se hizo", "Dificultades", "Decisiones", "Aporte"],
+        ["Semana", "Qué se hizo", "Dificultades", "Decisiones"],
         [
-            ["1-2", "Por completar", "", "", ""],
-            ["3-4", "Por completar", "", "", ""],
-            ["Desarrollo A (ajustar semana)", "Backend, base de datos, autenticación y roles, interfaz web", "Conflictos por documentos duplicados al crear pacientes", "Validar unicidad en la base y responder 409", "esteban-nieto"],
-            ["Desarrollo B (ajustar semana)", "Datos de prueba, ajuste de distribuciones, modelo SimPy y validación", "La validación rechazaba el modelo por sobreestimar la tasa de llegadas", "Corregir la tasa incluyendo el intervalo censurado del cierre de jornada", "esteban-nieto"],
-            ["Desarrollo C (ajustar semana)", "Escenarios, Monte Carlo, modelo financiero, tablero, alertas y cola priorizada", "Diferencia entre la incertidumbre del Monte Carlo y la del modelo detallado al compararlos", "Fijar la incertidumbre en cero en la prueba cruzada", "esteban-nieto"],
-            ["12", "Por completar", "", "", ""],
+            ["1", "Lectura del enunciado, elección del proceso (turnos en un puesto de salud rural de Chía) y árbol de problemas", "No se dispone de datos reales del puesto", "Usar datos sintéticos con semilla fija y declararlo en los informes"],
+            ["2", "Propuesta y alcance (PC1), diagrama de flujo del proceso y descripción del sistema", "Delimitar la frontera del sistema", "Tres servicios, cuatro profesionales y jornada de 7:00 a 16:00"],
+            ["3", "Requisitos, historias de usuario y modelo entidad-relación en tercera forma normal", "Resolver la relación entre profesionales y servicios", "Tabla intermedia `profesional_servicio` (muchos a muchos) y borrado lógico"],
+            ["4", "Arquitectura por capas, plan y bitácora, repositorio y pipeline de CI (PC2)", "Vensim modela dinámica de sistemas y no eventos discretos", "Vensim para el módulo B1 y SimPy para la simulación del módulo B3"],
+            ["5", "Modelo de datos, seguridad (scrypt y JWT), auditoría y autenticación con tres roles", "El validador de correos rechazó el dominio `.local` de los usuarios de prueba", "Usar el dominio `saludrural.co`"],
+            ["6", "CRUD genérico con permisos por rol, búsqueda, orden, filtros y paginación en el servidor, y pruebas", "Un documento duplicado producía un error 500 al insertar", "Capturar el conflicto al insertar y responder 409"],
+            ["7", "Interfaz web con validaciones en cliente, Docker, Caddy con HTTPS y mapa comparativo (PC3)", "La política CSP estricta bloquea scripts y estilos en línea", "Mantener todo el JavaScript y los estilos en archivos propios"],
+            ["8", "Datos de prueba (700 pacientes y 4 467 citas), reportes y exportación a CSV", "Medir la espera por servicio sin depender del motor de base de datos", "Calcular los reportes en la capa de negocio"],
+            ["9", "Ajuste de distribuciones (KS y chi-cuadrado), modelo SimPy y validación (PC4)", "La validación rechazaba el modelo por sobreestimar la tasa de llegadas", "Corregir la tasa incluyendo el intervalo censurado del cierre de jornada"],
+            ["10", "Escenarios con 30 réplicas e intervalos de confianza, sensibilidad y Monte Carlo", "El Monte Carlo y el modelo detallado diferían por la incertidumbre añadida", "Fijar la incertidumbre en cero en la prueba cruzada"],
+            ["11", "Modelo financiero, cola priorizada, alertas, tablero y modelos de Vensim (PC5)", "El instalador de Vensim PLE no admite modo silencioso", "Instalarlo con interfaz y validar los modelos en el programa"],
+            ["12", "Informes, módulo B2, encuesta de usabilidad en Google Forms, prueba del despliegue con Docker y ensayo de la sustentación", "Ninguna dificultad nueva", "Entregar con la declaración de uso de IA"],
         ],
     )
     return doc
