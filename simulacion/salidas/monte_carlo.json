@@ -1,0 +1,35 @@
+{
+  "iteraciones": 10000,
+  "supuestos": {
+    "probabilidad_ausencia_profesional": 0.05,
+    "sigma_log_demanda": 0.15,
+    "factor_servicio_triangular": [
+      0.9,
+      1.0,
+      1.3
+    ],
+    "umbral_espera_min": 30
+  },
+  "sistema_actual": {
+    "p5": 6.35,
+    "p50": 19.32,
+    "p90": 54.89,
+    "p95": 79.54,
+    "p99": 149.44,
+    "media": 27.75,
+    "desviacion": 27.72,
+    "probabilidad_superar_umbral": 0.2753,
+    "pacientes_sin_atender_por_dia": 1.892
+  },
+  "fila_unica": {
+    "p5": 3.49,
+    "p50": 12.39,
+    "p90": 46.53,
+    "p95": 77.07,
+    "p99": 151.88,
+    "media": 21.69,
+    "desviacion": 28.51,
+    "probabilidad_superar_umbral": 0.177,
+    "pacientes_sin_atender_por_dia": 1.851
+  }
+}

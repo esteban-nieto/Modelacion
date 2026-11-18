@@ -1,0 +1,97 @@
+{
+  "supuestos": {
+    "jornadas_por_anio": 250,
+    "citas_por_dia": 71.8,
+    "minutos_ahorrados_por_cita": 6.618,
+    "valor_minuto_paciente": 95.0,
+    "inversion_inicial": 14000000.0,
+    "costo_operacion_anual": 3000000.0,
+    "tasa_descuento": 0.12
+  },
+  "fila_unica_con_prioridad": {
+    "flujo_de_caja": [
+      -14000000,
+      8285344,
+      8285344,
+      8285344,
+      8285344,
+      8285344
+    ],
+    "beneficio_anual": 11285344,
+    "vpn": 15866813,
+    "tir": 0.5185,
+    "relacion_beneficio_costo": 1.639,
+    "recuperacion_anios": 1.69,
+    "sostenibilidad_cobertura_operacion": 3.76
+  },
+  "medico_adicional": {
+    "supuestos": {
+      "jornadas_por_anio": 250,
+      "citas_por_dia": 71.8,
+      "minutos_ahorrados_por_cita": 5.842,
+      "valor_minuto_paciente": 95.0,
+      "inversion_inicial": 2000000.0,
+      "costo_operacion_anual": 118000000.0,
+      "tasa_descuento": 0.12
+    },
+    "flujo_de_caja": [
+      -2000000,
+      -108037930,
+      -108037930,
+      -108037930,
+      -108037930,
+      -108037930
+    ],
+    "beneficio_anual": 9962070,
+    "vpn": -391452557,
+    "tir": null,
+    "relacion_beneficio_costo": 0.084,
+    "recuperacion_anios": null,
+    "sostenibilidad_cobertura_operacion": 0.08
+  },
+  "sensibilidad_vpn": [
+    {
+      "variable": "valor_minuto_paciente",
+      "valor_bajo": 65.0,
+      "valor_alto": 130.0,
+      "vpn_bajo": 3020136,
+      "vpn_alto": 30854602
+    },
+    {
+      "variable": "citas_por_dia",
+      "valor_bajo": 57.44,
+      "valor_alto": 86.16,
+      "vpn_bajo": 7730584,
+      "vpn_alto": 24003041
+    },
+    {
+      "variable": "minutos_ahorrados_por_cita",
+      "valor_bajo": 5.678,
+      "valor_alto": 7.558,
+      "vpn_bajo": 10088591,
+      "vpn_alto": 21645035
+    },
+    {
+      "variable": "costo_operacion_anual",
+      "valor_bajo": 2000000.0,
+      "valor_alto": 5000000.0,
+      "vpn_bajo": 19471589,
+      "vpn_alto": 8657260
+    },
+    {
+      "variable": "tasa_descuento",
+      "valor_bajo": 0.08,
+      "valor_alto": 0.16,
+      "vpn_bajo": 19080978,
+      "vpn_alto": 13128651
+    }
+  ],
+  "monte_carlo_vpn": {
+    "iteraciones": 10000,
+    "media": 15260027,
+    "p5": 3626191,
+    "p50": 14884227,
+    "p95": 28299321,
+    "probabilidad_vpn_positivo": 0.9877
+  }
+}
