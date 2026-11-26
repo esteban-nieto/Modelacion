@@ -120,14 +120,14 @@ def informe_b():
         ],
     )
     doc.add_heading("2.2 Diagramas estructurados", 2)
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 4.5, "Figura 1. Diagrama de flujo del proceso")
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 4.5, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 3.5, "Figura 1. Diagrama de flujo del proceso")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 3.5, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
     doc.add_paragraph(
         "El bucle R1 refuerza la demanda: más pacientes atendidos aumentan la confianza de la comunidad y, con ella, las llegadas. "
         "Los bucles B1, B2 y B3 la limitan: una cola larga eleva el tiempo de espera, que provoca abandonos y reduce la confianza, y a la vez una cola mayor aumenta la atención. "
         "La capacidad de los profesionales actúa sobre el tiempo de espera y es la palanca principal de decisión."
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 4.5, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 3.5, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
     vensim = pd.read_csv(RAIZ / "diagramas" / "resultados_vensim.csv")
     doc.add_paragraph(
         "El modelo de flujos y niveles agrega los tres servicios en una sola cola, por lo que describe la tendencia del sistema y no sus tiempos de espera por servicio. "
@@ -138,7 +138,7 @@ def informe_b():
         ["Escenario", "Atendidos", "Abandonos", "Cola máxima", "Espera máx. (min)", "Confianza final"],
         [[r.escenario, r.atendidos, r.abandonos, r.cola_maxima, r.espera_maxima_min, r.confianza_final] for r in vensim.itertuples()],
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 4.5, "Figura 4. Árbol de problemas")
+    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 3.5, "Figura 4. Árbol de problemas")
     doc.add_heading("2.3 Supuestos, simplificaciones y limitaciones", 2)
     lista(
         doc,
@@ -164,22 +164,19 @@ def informe_b():
         [[r.servicio, r.variable, r.distribucion, r.n, f"{r.ks_p:.3f}", f"{r.chi2_p:.3f}"] for r in elegidas.itertuples()],
     )
     doc.add_paragraph(
-        "El valor p de KS con parámetros estimados es aproximado (tiende a ser conservador). Para las llegadas exponenciales la tasa se corrigió incluyendo el último intervalo censurado por el cierre de cada jornada "
-        "(tasa = llegadas totales dividido por minutos observados); omitirlo sobreestimaba la carga y llevó a rechazar la validación en una primera versión."
+        "El valor p de KS con parámetros estimados es aproximado. La tasa de llegadas incluye el último intervalo censurado por el cierre de la jornada."
     )
 
     doc.add_heading("4. Diseño del modelo de simulación", 1)
     doc.add_paragraph(
-        "El modelo de eventos discretos se construyó en SimPy, una de las herramientas equivalentes aceptadas en el enunciado. Las locaciones son las filas de cada servicio, las entidades son los pacientes, "
-        "los recursos son los profesionales (recursos con prioridad de capacidad 1 por profesional, o capacidad igual al número de profesionales en el esquema de fila única), las llegadas siguen los procesos ajustados, "
-        "el turno es una jornada de 540 minutos y el enrutamiento asigna al paciente a un profesional al azar (sistema actual) o al primero libre (fila única)."
+        "El modelo de eventos discretos se construyó en SimPy: cada servicio es una fila, los pacientes son las entidades, los profesionales son los recursos y la jornada dura 540 minutos."
     )
 
     doc.add_heading("5. Verificación y validación", 1)
     lista(
         doc,
         [
-            "Verificación: pruebas automáticas de consistencia (más recursos reducen la espera, más demanda la aumenta, la prioridad favorece a los pacientes prioritarios) y comparación del modelo SimPy con una implementación independiente por recursión de colas, con diferencia menor a 3 minutos en 300 jornadas.",
+            "Verificación: pruebas de consistencia (más recursos reducen la espera; más demanda la aumenta; la prioridad favorece a los prioritarios).",
             "Casos extremos: con capacidad ampliada la espera tiende a cero y con demanda +40 % crece de forma marcada (véase sensibilidad).",
             "Validación: comparación de la espera media diaria real (60 jornadas) con la simulada (400 jornadas).",
         ],
@@ -217,7 +214,7 @@ def informe_b():
         ],
         "Media [IC 95 %]",
     )
-    figura(doc, SALIDAS / "espera_escenarios.png", 4.5, "Figura 5. Espera media por escenario")
+    figura(doc, SALIDAS / "espera_escenarios.png", 3.5, "Figura 5. Espera media por escenario")
     tabla(
         doc,
         ["Escenario frente al base", "Diferencia en espera media (min)", "Diferencia en espera prioritarios (min)"],
@@ -268,7 +265,7 @@ def informe_b():
             ["Pacientes sin atender por día", actual["pacientes_sin_atender_por_dia"], propuesta["pacientes_sin_atender_por_dia"]],
         ],
     )
-    figura(doc, SALIDAS / "monte_carlo_histograma.png", 4.5, "Figura 6. Distribución de la espera media diaria")
+    figura(doc, SALIDAS / "monte_carlo_histograma.png", 3.5, "Figura 6. Distribución de la espera media diaria")
     doc.add_paragraph(
         f"Interpretación: en el 90 % de las jornadas del sistema actual la espera media no supera {actual['p90']} minutos, frente a {propuesta['p90']} con fila única. "
         "La cola larga de la distribución (percentil 99) se asocia, según el diseño del ejercicio, con las jornadas en que falta un profesional (no se aisló su efecto por separado), por lo que la fila única no elimina el riesgo de las jornadas críticas; "
@@ -315,7 +312,7 @@ def informe_b():
         "Análisis de sensibilidad univariado del VPN.",
     )
     mc = financiero["monte_carlo_vpn"]
-    figura(doc, SALIDAS / "financiero_vpn.png", 4.5, "Figura 7. Distribución del VPN con 10 000 iteraciones")
+    figura(doc, SALIDAS / "financiero_vpn.png", 3.5, "Figura 7. Distribución del VPN con 10 000 iteraciones")
     doc.add_paragraph(
         f"Con incertidumbre simultánea en las variables, el VPN medio es {pesos(mc['media'])}, con un intervalo entre percentiles 5 y 95 de {pesos(mc['p5'])} a {pesos(mc['p95'])}, "
         f"y probabilidad de VPN positivo de {100 * mc['probabilidad_vpn_positivo']:.1f} %. La variable que más mueve el resultado es el valor asignado al tiempo del paciente, "
@@ -371,20 +368,18 @@ def informe_b():
 
     doc.add_heading("12. Declaración de uso de herramientas de IA", 1)
     doc.add_paragraph(
-        "Se utilizó el asistente Claude (Anthropic) como apoyo para escribir el código del sistema, los scripts de simulación, los modelos de Vensim y el borrador de estos documentos. "
-        "El equipo verificó el funcionamiento ejecutando las pruebas automáticas (cobertura de la capa de negocio superior al 60 %), revisando los resultados estadísticos y probando la interfaz. "
-        "Cada integrante debe poder explicar y modificar en vivo cualquier parte de lo entregado; lo que no pueda explicar debe considerarse no entregado."
+        "Se usó el asistente Claude (Anthropic) para escribir código, scripts, modelos y borradores. El equipo verificó el resultado con las pruebas automáticas, "
+        "la revisión de resultados estadísticos y la prueba de la interfaz. Cada integrante debe poder explicar cualquier parte de lo entregado."
     )
 
     doc.add_heading("13. Conclusiones", 1)
     lista(
         doc,
         [
-            f"Reorganizar las filas en una fila única por servicio con prioridad reduce la espera media de {esc['base']['metricas']['espera_media_min']['media']:.1f} a {esc[recomendado]['metricas']['espera_media_min']['media']:.1f} minutos sin costo adicional de personal.",
-            "El modelo reproduce el comportamiento de los datos (p > 0,05 en tres pruebas), con la salvedad de que los datos son sintéticos.",
-            "El Monte Carlo muestra que las ausencias de profesionales generan las jornadas críticas, que requieren un plan de contingencia.",
-            "La alternativa de contratar un médico adicional no es financieramente sostenible con los supuestos adoptados.",
-            "Los resultados se integran al sistema mediante la cola priorizada, el profesional sugerido, las alertas y el tablero comparativo.",
+            f"Una fila única por servicio con prioridad reduce la espera media de {esc['base']['metricas']['espera_media_min']['media']:.1f} a {esc[recomendado]['metricas']['espera_media_min']['media']:.1f} minutos sin costo de personal.",
+            "El modelo reproduce el comportamiento de los datos (p > 0,05), con la salvedad de que los datos son sintéticos.",
+            "Las ausencias de profesionales generan las jornadas críticas y requieren un plan de contingencia.",
+            "Contratar un médico adicional no es financieramente sostenible con los supuestos adoptados.",
         ],
     )
     doc.add_heading("Pendientes del módulo B2", 1)
