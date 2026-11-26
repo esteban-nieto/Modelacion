@@ -9,6 +9,8 @@ REFERENCIAS = [
     "Medina Monterrosa, Y., & Arrieta-Canchila, K. (2013). Simulación de eventos discretos para optimizar recursos restrictivos del servicio de urgencias de un hospital. Revista Científica Teknos, 13(1), 55-66.",
     "Sánchez Castillo, V., Gómez Cano, C. A., & Gonzalez-Argote, J. (2023). Telemedicine and mHealth applications for health monitoring in rural communities in Colombia: A systematic review. EAI Endorsed Transactions on Pervasive Health and Technology, 9(1). https://doi.org/10.4108/eetpht.9.3400",
     "Xie, J., Zhuang, W., Ang, M., Chou, M. C., Luo, L., & Yao, D. D. (2021). Analytics for hospital resource planning: Two case studies. Production and Operations Management. https://doi.org/10.1111/poms.13158",
+    "Dosi, C., Iori, M., Kramer, A., & Vignoli, M. (2023). Successful implementation of discrete event simulation: Integrating design thinking and simulation approach in an emergency department. Production Planning & Control, 34(13), 1233-1247. https://doi.org/10.1080/09537287.2021.1996651",
+    "Comis, M., et al. (2021). Patients, primary care, and policy: Agent-based simulation modeling for health care decision support. Health Care Management Science, 24(4). https://doi.org/10.1007/s10729-021-09556-2",
 ]
 
 # Casos de simulación para decidir. Solo se incluyen los verificados con fuente primaria.
@@ -18,6 +20,8 @@ CASOS_LOCALES = [
 ]
 CASOS_GLOBALES = [
     ("Singapur y Chengdu, China (2021)", "Planeación de camas y de recursos de diagnóstico en dos hospitales grandes, con datos reales y simulación para validar.", "Xie et al. (2021)"),
+    ("Italia (2023)", "Urgencias de un hospital del norte de Italia: la simulación validada por los gestores eligió un escenario que el servicio implementó.", "Dosi et al. (2023)"),
+    ("Alemania (2021)", "Sistema de atención primaria regional modelado con datos empíricos para evaluar políticas de decisión (agentes).", "Comis et al. (2021)"),
 ]
 
 RESENAS = [
@@ -42,7 +46,7 @@ def b2():
     doc.add_heading("Estado del módulo", 1)
     doc.add_paragraph(
         "Este documento contiene solo lo verificado hasta ahora. La guía exige al menos tres casos locales y tres globales, y dos artículos "
-        "revisados por pares con al menos uno en inglés. Hoy se cumplen parcialmente: hay dos casos locales y un caso global verificados, y un artículo en inglés con DOI. "
+        "revisados por pares con al menos uno en inglés. Hoy hay dos casos locales y tres globales verificados, y un artículo en inglés con DOI. "
         "Las secciones de abajo marcan lo que falta."
     )
 
@@ -53,7 +57,7 @@ def b2():
         [[ "Local", c[0], c[1], c[2]] for c in CASOS_LOCALES] + [["Global", c[0], c[1], c[2]] for c in CASOS_GLOBALES],
     )
     doc.add_paragraph(
-        "Pendiente: 1 caso local y 2 globales más. La infografía de 1 página (`docs/figuras/infografia_b2.png`) todavía muestra "
+        "Pendiente: 1 caso local más. Candidato sin confirmar: Universidad Nacional, revista DYNA (2026, DOI 10.15446/dyna.v93n242.125778), simulación en FlexSim de centros de salud ante perturbaciones epidemiológicas; falta confirmar que el caso sea colombiano. La infografía de 1 página (`docs/figuras/infografia_b2.png`) todavía muestra "
         "casos de una versión anterior y debe regenerarse con esta tabla."
     )
 
@@ -61,7 +65,7 @@ def b2():
     doc.add_paragraph(
         "Los casos verificados comparten un patrón: un servicio con demanda variable y recursos limitados se modela como un sistema de colas, "
         "se alimenta con datos registrados y se usa para comparar alternativas antes de cambiar la operación. Los dos casos colombianos "
-        "tratan de urgencias y de emergencias, y el caso global trata de planeación hospitalaria. Ninguno trata de un puesto de salud rural."
+        "tratan de urgencias y de emergencias. Los globales cubren planeación hospitalaria (Singapur y Chengdu), urgencias (Italia) y atención primaria con agentes (Alemania). Ninguno trata de un puesto de salud rural."
     )
     lista(
         doc,
@@ -107,7 +111,7 @@ def b2():
     lista(
         doc,
         [
-            "Un caso local más y dos casos globales más, con fuente primaria verificada (DOI o revista).",
+            "Un caso local más, con fuente primaria verificada (DOI o revista) y ubicación confirmada en Colombia.",
             "Un segundo artículo revisado por pares sobre tecnologías electrónicas en salud, ambiente o conectividad.",
             "Lectura del texto completo de los cuatro artículos citados.",
             "Regenerar la infografía con los casos finales.",
