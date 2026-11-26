@@ -1,7 +1,7 @@
 """Arma docs/entregables_finales/ con los 10 entregables finales de la guía (sección 9).
 
 Copia los archivos reales del proyecto a una subcarpeta por entregable y genera un índice con
-el estado de cada uno. Lo que no existe (video, declaración de IA, autoevaluación) queda marcado
+el estado de cada uno. Lo que no existe (declaración de IA, autoevaluación) queda marcado
 como pendiente y se deja una plantilla o guía de qué falta.
 
 Uso: python scripts/armar_entregables.py
@@ -48,17 +48,13 @@ ENTREGABLES = [
      ["docs/informes/Bitacora_y_Cronograma.docx", "docs/figuras/gantt.png"],
      "Entregado (revisar aporte individual)",
      "La bitácora debe mostrar el aporte individual identificable de cada integrante."),
-    ("08_videos_individuales", "Video individual de postura crítica (máximo 5 minutos) por cada integrante",
-     ["docs/exposicion/Guion_Video_B5.docx"],
-     "Pendiente (no grabado)",
-     "Cada integrante debe grabar su video. Se deja el guion; el video no se puede generar desde aquí."),
-    ("09_presentacion_sustentacion", "Presentación de la sustentación",
+    ("08_presentacion_sustentacion", "Presentación de la sustentación",
      ["docs/exposicion/Exposicion_Modelacion.pptx"],
      "Entregado (diseño por revisar)",
      "Revisar el renderizado de todas las diapositivas en PowerPoint antes de la sustentación."),
-    ("10_declaracion_IA_y_coevaluacion", "Declaración de uso de herramientas de IA y autoevaluación/coevaluación",
+    ("09_declaracion_IA_y_coevaluacion", "Declaración de uso de herramientas de IA y autoevaluación/coevaluación",
      [], "Pendiente (borrador)",
-     "Ver el borrador en la subcarpeta 10_declaracion_IA_y_coevaluacion. El equipo debe revisarlo, completarlo y firmarlo."),
+     "Ver el borrador en la subcarpeta 09_declaracion_IA_y_coevaluacion. El equipo debe revisarlo, completarlo y firmarlo."),
 ]
 
 BORRADOR_IA = """# Declaración de uso de herramientas de IA (BORRADOR)
@@ -116,7 +112,7 @@ def ejecutar():
         carpeta = DESTINO / carpeta_nombre
         carpeta.mkdir()
         copiados = [a for a in archivos if copiar(a, carpeta)]
-        if carpeta_nombre == "10_declaracion_IA_y_coevaluacion":
+        if carpeta_nombre == "09_declaracion_IA_y_coevaluacion":
             for nombre, texto in (("declaracion_IA_BORRADOR", BORRADOR_IA), ("autoevaluacion_coevaluacion_PLANTILLA", PLANTILLA_COEVAL)):
                 temporal = carpeta / f"{nombre}.md"
                 temporal.write_text(texto, encoding="utf-8")
