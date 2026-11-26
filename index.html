@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resultados: gestión de turnos en un puesto de salud rural</title>
+<style>
+  :root { --verde: #0b6e4f; --gris: #5b6770; --fondo: #f6f8f7; --linea: #d8e0dc; }
+  body { font-family: system-ui, sans-serif; margin: 0; background: var(--fondo); color: #1d2630; }
+  header { background: var(--verde); color: white; padding: 24px 32px; }
+  header h1 { margin: 0 0 6px; font-size: 24px; }
+  header p { margin: 0; opacity: .9; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  section { background: white; border: 1px solid var(--linea); border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
+  h2 { margin: 0 0 4px; font-size: 19px; color: var(--verde); }
+  .nota { color: var(--gris); font-size: 14px; margin: 0 0 14px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 8px; }
+  .kpi { border: 1px solid var(--linea); border-radius: 6px; padding: 12px; }
+  .kpi b { display: block; font-size: 22px; color: var(--verde); }
+  .kpi span { font-size: 13px; color: var(--gris); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--linea); vertical-align: top; }
+  th { color: var(--gris); font-weight: 600; }
+  .barra { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-size: 14px; }
+  .barra .nombre { width: 210px; }
+  .barra .pista { flex: 1; background: #eef3f1; border-radius: 4px; height: 18px; position: relative; }
+  .barra .relleno { background: var(--verde); height: 100%; border-radius: 4px; }
+  .barra .valor { width: 150px; text-align: right; color: var(--gris); }
+  .ok { color: var(--verde); font-weight: 600; }
+  .mal { color: #a33b20; font-weight: 600; }
+  img { max-width: 100%; border: 1px solid var(--linea); border-radius: 6px; margin-top: 8px; }
+  .etiqueta { display: inline-block; background: #fff4d6; color: #7a5a00; border-radius: 4px; padding: 2px 8px; font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Gestión de turnos en un puesto de salud rural</h1>
+  <p>Resultados de la simulación, el análisis financiero y la revisión de usabilidad.</p>
+</header>
+<main>
+
+<section>
+  <h2>1. Indicadores principales</h2>
+  <p class="nota">Cifras leídas de <code>simulacion/salidas/</code>. Cada escenario se corrió con 30 réplicas.</p>
+  <div class="kpis" id="kpis"></div>
+</section>
+
+<section>
+  <h2>2. Validación contra el CRUD</h2>
+  <p class="nota">Compara la espera diaria real (datos del CRUD) con la simulada, 400 jornadas simuladas.</p>
+  <div id="validacion"></div>
+</section>
+
+<section>
+  <h2>3. Escenarios: espera media con intervalo del 95 %</h2>
+  <p class="nota">Barras: espera media en minutos. Un escenario es mejor cuanto menor es la barra.</p>
+  <div id="escenarios"></div>
+  <img src="salidas/espera_escenarios.png" alt="Espera media por escenario con IC del 95 %">
+</section>
+
+<section>
+  <h2>4. Sensibilidad y cuellos de botella</h2>
+  <div id="sensibilidad"></div>
+  <div id="cuellos"></div>
+</section>
+
+<section>
+  <h2>5. Calentamiento: espera por hora de llegada</h2>
+  <p class="nota">La espera sube durante la jornada porque el puesto abre vacío. No se descarta ninguna hora; ver la justificación en el informe.</p>
+  <div id="calentamiento"></div>
+</section>
+
+<section>
+  <h2>6. Monte Carlo (10 000 iteraciones)</h2>
+  <div id="montecarlo"></div>
+  <img src="salidas/monte_carlo_histograma.png" alt="Histograma Monte Carlo">
+</section>
+
+<section>
+  <h2>7. Modelo financiero</h2>
+  <div id="financiero"></div>
+  <img src="salidas/financiero_vpn.png" alt="Distribución del VPN">
+</section>
+
+<section>
+  <h2>8. Revisión de usabilidad <span class="etiqueta">SIMULADA</span></h2>
+  <p class="nota">Recorrido automatizado por perfiles de rol contra la API real. No reemplaza pruebas con personas reales.</p>
+  <div id="usabilidad"></div>
+</section>
+
+</main>
+<script>
+const DATOS = {"resultados": {"configuracion": {"replicas": 30, "jornadas_por_replica": 20, "calentamiento_min": 0, "nivel_confianza": 0.95, "semilla": 12345}, "validacion": {"dias_reales": 60, "jornadas_simuladas": 400, "espera_diaria_real_media": 14.985, "espera_diaria_simulada_media": 16.388, "welch_t_p": 0.2098, "ks_dos_muestras_p": 0.4347, "mann_whitney_p": 0.2846, "conclusion": "No se rechaza la igualdad entre el comportamiento real y el simulado (p > 0,05)"}, "escenarios": {"base": {"descripcion": "Sistema actual: cada paciente queda en la fila de un profesional y se atiende en orden de llegada", "tipo": "referencia", "costo_extra": 0, "metricas": {"espera_media_min": {"media": 16.443, "ic_inf": 15.69, "ic_sup": 17.195}, "espera_prioritarios_min": {"media": 15.952, "ic_inf": 14.932, "ic_sup": 16.973}, "espera_p90_min": {"media": 50.197, "ic_inf": 47.944, "ic_sup": 52.45}, "ocupacion_pct": {"media": 60.328, "ic_inf": 59.555, "ic_sup": 61.101}, "citas_por_dia": {"media": 71.75, "ic_inf": 71.145, "ic_sup": 72.355}, "espera_Enfermería y vacunación": {"media": 5.78, "ic_inf": 5.367, "ic_sup": 6.194}, "ocupacion_Enfermería y vacunación": {"media": 44.608, "ic_inf": 43.805, "ic_sup": 45.411}, "espera_Medicina general": {"media": 20.925, "ic_inf": 19.63, "ic_sup": 22.22}, "ocupacion_Medicina general": {"media": 66.604, "ic_inf": 65.483, "ic_sup": 67.725}, "espera_Odontología": {"media": 24.951, "ic_inf": 23.156, "ic_sup": 26.745}, "ocupacion_Odontología": {"media": 63.497, "ic_inf": 61.737, "ic_sup": 65.257}}, "diferencia_vs_base": {}}, "cola_unica": {"descripcion": "Una sola fila por servicio: el siguiente paciente lo atiende el primer profesional libre", "tipo": "mejora", "costo_extra": 0, "metricas": {"espera_media_min": {"media": 9.825, "ic_inf": 9.332, "ic_sup": 10.317}, "espera_prioritarios_min": {"media": 10.02, "ic_inf": 9.524, "ic_sup": 10.515}, "espera_p90_min": {"media": 29.723, "ic_inf": 28.375, "ic_sup": 31.071}, "ocupacion_pct": {"media": 59.231, "ic_inf": 58.54, "ic_sup": 59.922}, "citas_por_dia": {"media": 70.472, "ic_inf": 69.904, "ic_sup": 71.039}, "espera_Enfermería y vacunación": {"media": 5.562, "ic_inf": 5.185, "ic_sup": 5.938}, "ocupacion_Enfermería y vacunación": {"media": 44.12, "ic_inf": 43.205, "ic_sup": 45.034}, "espera_Medicina general": {"media": 8.152, "ic_inf": 7.561, "ic_sup": 8.744}, "ocupacion_Medicina general": {"media": 65.508, "ic_inf": 64.511, "ic_sup": 66.505}, "espera_Odontología": {"media": 24.685, "ic_inf": 22.581, "ic_sup": 26.79}, "ocupacion_Odontología": {"media": 61.788, "ic_inf": 59.877, "ic_sup": 63.699}}, "diferencia_vs_base": {"espera_media_min": {"media": -6.618, "ic_inf": -7.558, "ic_sup": -5.678}, "espera_prioritarios_min": {"media": -5.933, "ic_inf": -7.251, "ic_sup": -4.614}, "espera_p90_min": {"media": -20.474, "ic_inf": -23.202, "ic_sup": -17.747}, "ocupacion_pct": {"media": -1.097, "ic_inf": -2.18, "ic_sup": -0.015}, "citas_por_dia": {"media": -1.278, "ic_inf": -2.112, "ic_sup": -0.445}}}, "cola_unica_prioridad": {"descripcion": "Fila única con prioridad para pacientes prioritarios", "tipo": "mejora", "costo_extra": 0, "metricas": {"espera_media_min": {"media": 9.825, "ic_inf": 9.332, "ic_sup": 10.317}, "espera_prioritarios_min": {"media": 4.923, "ic_inf": 4.675, "ic_sup": 5.171}, "espera_p90_min": {"media": 29.56, "ic_inf": 28.184, "ic_sup": 30.937}, "ocupacion_pct": {"media": 59.231, "ic_inf": 58.54, "ic_sup": 59.922}, "citas_por_dia": {"media": 70.472, "ic_inf": 69.904, "ic_sup": 71.039}, "espera_Enfermería y vacunación": {"media": 5.562, "ic_inf": 5.185, "ic_sup": 5.938}, "ocupacion_Enfermería y vacunación": {"media": 44.12, "ic_inf": 43.205, "ic_sup": 45.034}, "espera_Medicina general": {"media": 8.152, "ic_inf": 7.561, "ic_sup": 8.744}, "ocupacion_Medicina general": {"media": 65.508, "ic_inf": 64.511, "ic_sup": 66.505}, "espera_Odontología": {"media": 24.685, "ic_inf": 22.581, "ic_sup": 26.79}, "ocupacion_Odontología": {"media": 61.788, "ic_inf": 59.877, "ic_sup": 63.699}}, "diferencia_vs_base": {"espera_media_min": {"media": -6.618, "ic_inf": -7.558, "ic_sup": -5.678}, "espera_prioritarios_min": {"media": -11.029, "ic_inf": -12.134, "ic_sup": -9.924}, "espera_p90_min": {"media": -20.637, "ic_inf": -23.396, "ic_sup": -17.878}, "ocupacion_pct": {"media": -1.097, "ic_inf": -2.18, "ic_sup": -0.015}, "citas_por_dia": {"media": -1.278, "ic_inf": -2.112, "ic_sup": -0.445}}}, "medico_adicional": {"descripcion": "Se contrata un médico general adicional manteniendo filas por profesional", "tipo": "mejora", "costo_extra": 1, "metricas": {"espera_media_min": {"media": 10.6, "ic_inf": 10.137, "ic_sup": 11.063}, "espera_prioritarios_min": {"media": 9.979, "ic_inf": 9.247, "ic_sup": 10.711}, "espera_p90_min": {"media": 33.57, "ic_inf": 32.378, "ic_sup": 34.762}, "ocupacion_pct": {"media": 48.263, "ic_inf": 47.644, "ic_sup": 48.881}, "citas_por_dia": {"media": 71.75, "ic_inf": 71.145, "ic_sup": 72.355}, "espera_Enfermería y vacunación": {"media": 5.78, "ic_inf": 5.367, "ic_sup": 6.194}, "ocupacion_Enfermería y vacunación": {"media": 44.608, "ic_inf": 43.805, "ic_sup": 45.411}, "espera_Medicina general": {"media": 9.387, "ic_inf": 8.819, "ic_sup": 9.955}, "ocupacion_Medicina general": {"media": 44.403, "ic_inf": 43.655, "ic_sup": 45.15}, "espera_Odontología": {"media": 24.951, "ic_inf": 23.156, "ic_sup": 26.745}, "ocupacion_Odontología": {"media": 63.497, "ic_inf": 61.737, "ic_sup": 65.257}}, "diferencia_vs_base": {"espera_media_min": {"media": -5.842, "ic_inf": -6.335, "ic_sup": -5.35}, "espera_prioritarios_min": {"media": -5.973, "ic_inf": -6.568, "ic_sup": -5.379}, "espera_p90_min": {"media": -16.627, "ic_inf": -18.382, "ic_sup": -14.873}, "ocupacion_pct": {"media": -12.066, "ic_inf": -12.22, "ic_sup": -11.911}, "citas_por_dia": {"media": 0.0, "ic_inf": 0.0, "ic_sup": 0.0}}}, "demanda_mas_25": {"descripcion": "Aumento de la demanda del 25 % con el sistema actual", "tipo": "estres", "costo_extra": 0, "metricas": {"espera_media_min": {"media": 26.734, "ic_inf": 25.576, "ic_sup": 27.893}, "espera_prioritarios_min": {"media": 26.882, "ic_inf": 25.346, "ic_sup": 28.418}, "espera_p90_min": {"media": 76.713, "ic_inf": 73.188, "ic_sup": 80.239}, "ocupacion_pct": {"media": 74.78, "ic_inf": 73.906, "ic_sup": 75.655}, "citas_por_dia": {"media": 88.558, "ic_inf": 87.822, "ic_sup": 89.294}, "espera_Enfermería y vacunación": {"media": 8.566, "ic_inf": 7.961, "ic_sup": 9.172}, "ocupacion_Enfermería y vacunación": {"media": 55.564, "ic_inf": 54.549, "ic_sup": 56.578}, "espera_Medicina general": {"media": 35.822, "ic_inf": 33.637, "ic_sup": 38.007}, "ocupacion_Medicina general": {"media": 82.792, "ic_inf": 81.651, "ic_sup": 83.933}, "espera_Odontología": {"media": 36.716, "ic_inf": 32.878, "ic_sup": 40.554}, "ocupacion_Odontología": {"media": 77.973, "ic_inf": 75.689, "ic_sup": 80.257}}, "diferencia_vs_base": {"espera_media_min": {"media": 10.292, "ic_inf": 8.794, "ic_sup": 11.79}, "espera_prioritarios_min": {"media": 10.93, "ic_inf": 8.933, "ic_sup": 12.927}, "espera_p90_min": {"media": 26.516, "ic_inf": 21.719, "ic_sup": 31.313}, "ocupacion_pct": {"media": 14.452, "ic_inf": 13.2, "ic_sup": 15.704}, "citas_por_dia": {"media": 16.808, "ic_inf": 15.772, "ic_sup": 17.845}}}, "demanda_mas_25_recomendado": {"descripcion": "Aumento de la demanda del 25 % con fila única y prioridad", "tipo": "estres", "costo_extra": 0, "metricas": {"espera_media_min": {"media": 18.268, "ic_inf": 17.289, "ic_sup": 19.247}, "espera_prioritarios_min": {"media": 6.13, "ic_inf": 5.892, "ic_sup": 6.367}, "espera_p90_min": {"media": 53.935, "ic_inf": 50.61, "ic_sup": 57.26}, "ocupacion_pct": {"media": 74.879, "ic_inf": 74.097, "ic_sup": 75.661}, "citas_por_dia": {"media": 88.835, "ic_inf": 88.109, "ic_sup": 89.561}, "espera_Enfermería y vacunación": {"media": 8.269, "ic_inf": 7.592, "ic_sup": 8.946}, "ocupacion_Enfermería y vacunación": {"media": 55.018, "ic_inf": 53.993, "ic_sup": 56.044}, "espera_Medicina general": {"media": 19.211, "ic_inf": 17.596, "ic_sup": 20.826}, "ocupacion_Medicina general": {"media": 83.165, "ic_inf": 82.194, "ic_sup": 84.135}, "espera_Odontología": {"media": 36.995, "ic_inf": 34.619, "ic_sup": 39.371}, "ocupacion_Odontología": {"media": 78.167, "ic_inf": 76.554, "ic_sup": 79.78}}, "diferencia_vs_base": {"espera_media_min": {"media": 1.826, "ic_inf": 0.788, "ic_sup": 2.863}, "espera_prioritarios_min": {"media": -9.823, "ic_inf": -10.873, "ic_sup": -8.772}, "espera_p90_min": {"media": 3.738, "ic_inf": 0.147, "ic_sup": 7.328}, "ocupacion_pct": {"media": 14.55, "ic_inf": 13.6, "ic_sup": 15.501}, "citas_por_dia": {"media": 17.085, "ic_inf": 16.269, "ic_sup": 17.901}}}}, "recomendado": "cola_unica_prioridad", "cuellos_de_botella_ocupacion_pct": {"Enfermería y vacunación": 44.608, "Medicina general": 66.604, "Odontología": 63.497}, "sensibilidad": [{"escenario": "base", "factor_demanda": 0.8, "factor_servicio": 0.9, "espera_media_min": 7.53, "ocupacion_pct": 42.548}, {"escenario": "base", "factor_demanda": 0.8, "factor_servicio": 1.0, "espera_media_min": 9.958, "ocupacion_pct": 47.275}, {"escenario": "base", "factor_demanda": 0.8, "factor_servicio": 1.1, "espera_media_min": 13.019, "ocupacion_pct": 52.003}, {"escenario": "base", "factor_demanda": 1.0, "factor_servicio": 0.9, "espera_media_min": 12.145, "ocupacion_pct": 54.537}, {"escenario": "base", "factor_demanda": 1.0, "factor_servicio": 1.0, "espera_media_min": 16.418, "ocupacion_pct": 60.597}, {"escenario": "base", "factor_demanda": 1.0, "factor_servicio": 1.1, "espera_media_min": 21.981, "ocupacion_pct": 66.657}, {"escenario": "base", "factor_demanda": 1.2, "factor_servicio": 0.9, "espera_media_min": 17.204, "ocupacion_pct": 64.958}, {"escenario": "base", "factor_demanda": 1.2, "factor_servicio": 1.0, "espera_media_min": 23.876, "ocupacion_pct": 72.175}, {"escenario": "base", "factor_demanda": 1.2, "factor_servicio": 1.1, "espera_media_min": 32.476, "ocupacion_pct": 79.393}, {"escenario": "base", "factor_demanda": 1.4, "factor_servicio": 0.9, "espera_media_min": 26.503, "ocupacion_pct": 76.313}, {"escenario": "base", "factor_demanda": 1.4, "factor_servicio": 1.0, "espera_media_min": 37.634, "ocupacion_pct": 84.792}, {"escenario": "base", "factor_demanda": 1.4, "factor_servicio": 1.1, "espera_media_min": 49.021, "ocupacion_pct": 93.271}, {"escenario": "cola_unica_prioridad", "factor_demanda": 0.8, "factor_servicio": 0.9, "espera_media_min": 4.422, "ocupacion_pct": 43.127}, {"escenario": "cola_unica_prioridad", "factor_demanda": 0.8, "factor_servicio": 1.0, "espera_media_min": 6.022, "ocupacion_pct": 47.919}, {"escenario": "cola_unica_prioridad", "factor_demanda": 0.8, "factor_servicio": 1.1, "espera_media_min": 7.998, "ocupacion_pct": 52.711}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.0, "factor_servicio": 0.9, "espera_media_min": 7.3, "ocupacion_pct": 54.356}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.0, "factor_servicio": 1.0, "espera_media_min": 10.226, "ocupacion_pct": 60.396}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.0, "factor_servicio": 1.1, "espera_media_min": 14.063, "ocupacion_pct": 66.436}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.2, "factor_servicio": 0.9, "espera_media_min": 11.231, "ocupacion_pct": 63.844}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.2, "factor_servicio": 1.0, "espera_media_min": 16.494, "ocupacion_pct": 70.938}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.2, "factor_servicio": 1.1, "espera_media_min": 23.25, "ocupacion_pct": 78.031}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.4, "factor_servicio": 0.9, "espera_media_min": 17.81, "ocupacion_pct": 76.379}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.4, "factor_servicio": 1.0, "espera_media_min": 26.382, "ocupacion_pct": 84.866}, {"escenario": "cola_unica_prioridad", "factor_demanda": 1.4, "factor_servicio": 1.1, "espera_media_min": 37.708, "ocupacion_pct": 93.352}]}, "monte_carlo": {"iteraciones": 10000, "supuestos": {"probabilidad_ausencia_profesional": 0.05, "sigma_log_demanda": 0.15, "factor_servicio_triangular": [0.9, 1.0, 1.3], "umbral_espera_min": 30}, "sistema_actual": {"p5": 5.69, "p50": 17.29, "p90": 49.9, "p95": 74.85, "p99": 155.36, "media": 25.64, "desviacion": 28.03, "probabilidad_superar_umbral": 0.2339, "pacientes_sin_atender_por_dia": 1.95}, "fila_unica": {"p5": 3.13, "p50": 11.0, "p90": 41.44, "p95": 69.22, "p99": 138.51, "media": 19.43, "desviacion": 26.1, "probabilidad_superar_umbral": 0.1496, "pacientes_sin_atender_por_dia": 1.792}}, "financiero": {"supuestos": {"jornadas_por_anio": 250, "citas_por_dia": 71.8, "minutos_ahorrados_por_cita": 6.618, "valor_minuto_paciente": 95.0, "inversion_inicial": 14000000.0, "costo_operacion_anual": 3000000.0, "tasa_descuento": 0.12}, "fila_unica_con_prioridad": {"flujo_de_caja": [-14000000, 8285344, 8285344, 8285344, 8285344, 8285344], "beneficio_anual": 11285344, "vpn": 15866813, "tir": 0.5185, "relacion_beneficio_costo": 1.639, "recuperacion_anios": 1.69, "sostenibilidad_cobertura_operacion": 3.76}, "medico_adicional": {"supuestos": {"jornadas_por_anio": 250, "citas_por_dia": 71.8, "minutos_ahorrados_por_cita": 5.842, "valor_minuto_paciente": 95.0, "inversion_inicial": 2000000.0, "costo_operacion_anual": 118000000.0, "tasa_descuento": 0.12}, "flujo_de_caja": [-2000000, -108037930, -108037930, -108037930, -108037930, -108037930], "beneficio_anual": 9962070, "vpn": -391452557, "tir": null, "relacion_beneficio_costo": 0.084, "recuperacion_anios": null, "sostenibilidad_cobertura_operacion": 0.08}, "sensibilidad_vpn": [{"variable": "valor_minuto_paciente", "valor_bajo": 65.0, "valor_alto": 130.0, "vpn_bajo": 3020136, "vpn_alto": 30854602}, {"variable": "citas_por_dia", "valor_bajo": 57.44, "valor_alto": 86.16, "vpn_bajo": 7730584, "vpn_alto": 24003041}, {"variable": "minutos_ahorrados_por_cita", "valor_bajo": 5.678, "valor_alto": 7.558, "vpn_bajo": 10088591, "vpn_alto": 21645035}, {"variable": "costo_operacion_anual", "valor_bajo": 2000000.0, "valor_alto": 5000000.0, "vpn_bajo": 19471589, "vpn_alto": 8657260}, {"variable": "tasa_descuento", "valor_bajo": 0.08, "valor_alto": 0.16, "vpn_bajo": 19080978, "vpn_alto": 13128651}], "monte_carlo_vpn": {"iteraciones": 10000, "media": 15260027, "p5": 3626191, "p50": 14884227, "p95": 28299321, "probabilidad_vpn_positivo": 0.9877}}, "calentamiento": {"metodo": "Espera media por hora de llegada, promedio de réplicas y jornadas", "replicas": 30, "jornadas_por_replica": 20, "medias_por_hora_min": {"8:00": 6.72, "9:00": 12.22, "10:00": 14.13, "11:00": 16.01, "12:00": 16.41, "13:00": 16.92, "14:00": 17.73, "15:00": 17.55, "16:00": 17.9}, "primera_hora_vs_resto_t": -27.055, "primera_hora_vs_resto_p": 8.859443602623663e-134, "conclusion": "La espera sube durante la jornada y se estabiliza hacia mediodía. Ese transitorio es el comportamiento real de un puesto que abre vacío a las 8:00, no un artefacto de arranque. Descartar horas iniciales subestimaría la espera. Por eso el calentamiento es 0 minutos: la métrica de interés es la jornada completa desde la apertura, y la validación contra el CRUD (escenarios.validar) usa esa misma definición."}, "usabilidad": {"simulado": true, "nota": "Recorrido automatizado por perfiles; no reemplaza pruebas con usuarios reales.", "usuarios": [{"perfil": {"id": "U1", "rol": "administrador", "tecnica": 5, "error_captura": false}, "tareas": [{"tarea": "Iniciar sesión", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Buscar paciente por documento", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Registrar una cita nueva", "codigo": 201, "resultado": "completada", "mensaje": ""}, {"tarea": "Ver la cola de atención", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Descargar un reporte en CSV", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Interpretar el tablero real vs. simulado", "codigo": 200, "resultado": "completada", "mensaje": ""}]}, {"perfil": {"id": "U2", "rol": "operador", "tecnica": 4, "error_captura": false}, "tareas": [{"tarea": "Iniciar sesión", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Buscar paciente por documento", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Registrar una cita nueva", "codigo": 201, "resultado": "completada", "mensaje": ""}, {"tarea": "Ver la cola de atención", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Descargar un reporte en CSV", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Interpretar el tablero real vs. simulado", "codigo": 200, "resultado": "completada", "mensaje": ""}]}, {"perfil": {"id": "U3", "rol": "consulta", "tecnica": 2, "error_captura": false}, "tareas": [{"tarea": "Iniciar sesión", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Buscar paciente por documento", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Registrar una cita nueva", "codigo": 403, "resultado": "bloqueado por rol", "mensaje": "{\"detail\":\"No tiene permisos para esta operación\"}"}, {"tarea": "Ver la cola de atención", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Descargar un reporte en CSV", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Interpretar el tablero real vs. simulado", "codigo": 200, "resultado": "completada", "mensaje": ""}]}, {"perfil": {"id": "U4", "rol": "consulta", "tecnica": 3, "error_captura": false}, "tareas": [{"tarea": "Iniciar sesión", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Buscar paciente por documento", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Registrar una cita nueva", "codigo": 403, "resultado": "bloqueado por rol", "mensaje": "{\"detail\":\"No tiene permisos para esta operación\"}"}, {"tarea": "Ver la cola de atención", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Descargar un reporte en CSV", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Interpretar el tablero real vs. simulado", "codigo": 200, "resultado": "completada", "mensaje": ""}]}, {"perfil": {"id": "U5", "rol": "operador", "tecnica": 1, "error_captura": true}, "tareas": [{"tarea": "Iniciar sesión", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Buscar paciente por documento", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Registrar cita (captura con error)", "codigo": 422, "resultado": "con ayuda", "mensaje": "{\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, El inicio de atención no puede ser anterior a la llegada\",\"input\":{\"paciente_id\":1,\"profesio"}, {"tarea": "Ver la cola de atención", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Descargar un reporte en CSV", "codigo": 200, "resultado": "completada", "mensaje": ""}, {"tarea": "Interpretar el tablero real vs. simulado", "codigo": 200, "resultado": "completada", "mensaje": ""}]}]}};
+
+function el(tag, texto, clase) {
+  const nodo = document.createElement(tag);
+  if (texto !== undefined && texto !== null) nodo.textContent = texto;
+  if (clase) nodo.className = clase;
+  return nodo;
+}
+
+function kpi(valor, etiqueta) {
+  const nodo = el("div", undefined, "kpi");
+  nodo.appendChild(el("b", valor));
+  nodo.appendChild(el("span", etiqueta));
+  return nodo;
+}
+
+function tabla(cabeceras, filas) {
+  const t = el("table");
+  const thead = el("tr");
+  cabeceras.forEach((c) => thead.appendChild(el("th", c)));
+  t.appendChild(thead);
+  filas.forEach((fila) => {
+    const tr = el("tr");
+    fila.forEach((c) => {
+      const td = el("td");
+      if (c && typeof c === "object" && "texto" in c) {
+        td.textContent = c.texto;
+        td.className = c.clase;
+      } else {
+        td.textContent = c;
+      }
+      tr.appendChild(td);
+    });
+    t.appendChild(tr);
+  });
+  return t;
+}
+
+function barras(items, maximo, formato) {
+  const contenedor = el("div");
+  items.forEach((it) => {
+    const fila = el("div", undefined, "barra");
+    fila.appendChild(el("div", it.nombre, "nombre"));
+    const pista = el("div", undefined, "pista");
+    const relleno = el("div", undefined, "relleno");
+    relleno.style.width = Math.max(0, Math.min(100, (100 * it.valor) / maximo)) + "%";
+    pista.appendChild(relleno);
+    fila.appendChild(pista);
+    fila.appendChild(el("div", formato(it), "valor"));
+    contenedor.appendChild(fila);
+  });
+  return contenedor;
+}
+
+const r = DATOS.resultados;
+const base = r.escenarios.base.metricas;
+const recomendado = r.escenarios[r.recomendado];
+const reduccion = 100 * (1 - recomendado.metricas.espera_media_min.media / base.espera_media_min.media);
+
+const kpis = document.getElementById("kpis");
+kpis.appendChild(kpi(base.espera_media_min.media.toFixed(1) + " min", "Espera media, sistema actual"));
+kpis.appendChild(kpi(recomendado.metricas.espera_media_min.media.toFixed(1) + " min", "Espera media, escenario recomendado"));
+kpis.appendChild(kpi(reduccion.toFixed(0) + " %", "Reducción frente al actual"));
+kpis.appendChild(kpi(r.recomendado, "Escenario recomendado"));
+
+const v = r.validacion;
+document.getElementById("validacion").appendChild(tabla(
+  ["Medida", "Valor"],
+  [
+    ["Días reales del CRUD", v.dias_reales],
+    ["Espera diaria real (media)", v.espera_diaria_real_media.toFixed(2) + " min"],
+    ["Espera diaria simulada (media)", v.espera_diaria_simulada_media.toFixed(2) + " min"],
+    ["Prueba t de Welch (p)", v.welch_t_p.toFixed(4)],
+    ["Kolmogorov-Smirnov dos muestras (p)", v.ks_dos_muestras_p.toFixed(4)],
+    ["Mann-Whitney (p)", v.mann_whitney_p.toFixed(4)],
+    [{ texto: "Conclusión", clase: "ok" }, v.conclusion],
+  ]
+));
+
+document.getElementById("escenarios").appendChild(barras(
+  Object.entries(r.escenarios).map(([nombre, e]) => ({
+    nombre: nombre + (nombre === r.recomendado ? " (recomendado)" : ""),
+    valor: e.metricas.espera_media_min.media,
+    ic: [e.metricas.espera_media_min.ic_inf, e.metricas.espera_media_min.ic_sup],
+  })),
+  Math.max(...Object.values(r.escenarios).map((e) => e.metricas.espera_media_min.media)) * 1.1,
+  (it) => it.valor.toFixed(1) + " min [" + it.ic[0].toFixed(1) + " – " + it.ic[1].toFixed(1) + "]"
+));
+
+const sens = r.sensibilidad.map((f) => [f.escenario, f.factor_demanda, f.factor_servicio, f.espera_media_min.toFixed(2), f.ocupacion_pct.toFixed(1) + " %"]);
+document.getElementById("sensibilidad").appendChild(el("p", "Sensibilidad: el escenario recomendado frente a cambios de demanda y de tiempo de servicio.", "nota"));
+document.getElementById("sensibilidad").appendChild(tabla(["Caso", "Factor demanda", "Factor servicio", "Espera media (min)", "Ocupación"], sens));
+document.getElementById("cuellos").appendChild(el("p", "Ocupación por servicio en el sistema actual (cuello de botella = mayor ocupación):", "nota"));
+document.getElementById("cuellos").appendChild(barras(
+  Object.entries(r.cuellos_de_botella_ocupacion_pct).map(([nombre, valor]) => ({ nombre, valor })),
+  100,
+  (it) => it.valor.toFixed(1) + " %"
+));
+
+const cal = DATOS.calentamiento;
+document.getElementById("calentamiento").appendChild(barras(
+  Object.entries(cal.medias_por_hora_min).map(([hora, valor]) => ({ nombre: hora, valor })),
+  Math.max(...Object.values(cal.medias_por_hora_min)) * 1.1,
+  (it) => it.valor.toFixed(1) + " min"
+));
+
+const mc = DATOS.monte_carlo;
+const filasMC = ["sistema_actual", "fila_unica"].filter((k) => mc[k]).map((k) => [
+  k === "sistema_actual" ? "Sistema actual" : "Fila única",
+  mc[k].p5, mc[k].p50, mc[k].p95, mc[k].p99,
+]);
+document.getElementById("montecarlo").appendChild(el("p", "Iteraciones: " + mc.iteraciones.toLocaleString("es-CO") + ". Percentiles de la espera media diaria (min).", "nota"));
+document.getElementById("montecarlo").appendChild(tabla(["Escenario", "p5", "p50", "p95", "p99"], filasMC));
+
+const fin = DATOS.financiero;
+const filasSens = (fin.sensibilidad_vpn || []).map((f) => [f.variable, f.valor_bajo, f.valor_alto, f.vpn_bajo.toLocaleString("es-CO"), f.vpn_alto.toLocaleString("es-CO")]);
+document.getElementById("financiero").appendChild(el("p", "VPN a 5 años de la fila única con prioridad (pesos colombianos). Sensibilidad frente a variables inciertas.", "nota"));
+document.getElementById("financiero").appendChild(tabla(["Variable", "Valor bajo", "Valor alto", "VPN bajo", "VPN alto"], filasSens));
+
+const filasUsab = [];
+DATOS.usabilidad.usuarios.forEach((u) => {
+  u.tareas.forEach((t) => {
+    const clase = t.resultado === "completada" ? "ok" : (t.resultado === "bloqueado por rol" ? "" : "mal");
+    filasUsab.push([u.perfil.id + " (" + u.perfil.rol + ")", t.tarea, { texto: t.resultado, clase }, t.codigo]);
+  });
+});
+document.getElementById("usabilidad").appendChild(tabla(["Perfil", "Tarea", "Resultado", "Código HTTP"], filasUsab));
+</script>
+</body>
+</html>
