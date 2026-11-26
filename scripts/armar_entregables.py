@@ -11,6 +11,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from md_a_word import convertir
+
 RAIZ = Path(__file__).resolve().parent.parent
 DESTINO = RAIZ / "docs" / "entregables_finales"
 
@@ -47,7 +49,7 @@ ENTREGABLES = [
      "Entregado (revisar aporte individual)",
      "La bitácora debe mostrar el aporte individual identificable de cada integrante."),
     ("08_videos_individuales", "Video individual de postura crítica (máximo 5 minutos) por cada integrante",
-     ["docs/exposicion/Guion_Video_B5.md"],
+     ["docs/exposicion/Guion_Video_B5.docx"],
      "Pendiente (no grabado)",
      "Cada integrante debe grabar su video. Se deja el guion; el video no se puede generar desde aquí."),
     ("09_presentacion_sustentacion", "Presentación de la sustentación",
@@ -115,9 +117,12 @@ def ejecutar():
         carpeta.mkdir()
         copiados = [a for a in archivos if copiar(a, carpeta)]
         if carpeta_nombre == "10_declaracion_IA_y_coevaluacion":
-            (carpeta / "declaracion_IA_BORRADOR.md").write_text(BORRADOR_IA, encoding="utf-8")
-            (carpeta / "autoevaluacion_coevaluacion_PLANTILLA.md").write_text(PLANTILLA_COEVAL, encoding="utf-8")
-            copiados = ["declaracion_IA_BORRADOR.md", "autoevaluacion_coevaluacion_PLANTILLA.md"]
+            for nombre, texto in (("declaracion_IA_BORRADOR", BORRADOR_IA), ("autoevaluacion_coevaluacion_PLANTILLA", PLANTILLA_COEVAL)):
+                temporal = carpeta / f"{nombre}.md"
+                temporal.write_text(texto, encoding="utf-8")
+                convertir(temporal, carpeta / f"{nombre}.docx")
+                temporal.unlink()
+            copiados = ["declaracion_IA_BORRADOR.docx", "autoevaluacion_coevaluacion_PLANTILLA.docx"]
         (carpeta / "LEEME.md").write_text(f"# {titulo}\n\n**Estado:** {estado}\n\n{nota}\n\nArchivos incluidos:\n" + "\n".join(f"- {c}" for c in copiados) + "\n", encoding="utf-8")
         n = carpeta_nombre.split("_")[0]
         indice.append(f"| {n} | {titulo} | {estado} | {len(copiados)} |")

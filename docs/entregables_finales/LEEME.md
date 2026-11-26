@@ -13,7 +13,7 @@
 | 09 | Presentación de la sustentación | Entregado (diseño por revisar) | 1 |
 | 10 | Declaración de uso de herramientas de IA y autoevaluación/coevaluación | Pendiente (borrador) | 2 |
 
-Generado desde el repositorio (último commit confirmado: 1e57780).
+Generado desde el repositorio (último commit confirmado: b1a7a8f).
 
 ## Notas por entregable
 - **01** El repositorio está en https://github.com/esteban-nieto/Modelacion, rama principal main.

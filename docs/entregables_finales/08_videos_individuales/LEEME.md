@@ -5,4 +5,4 @@
 Cada integrante debe grabar su video. Se deja el guion; el video no se puede generar desde aquí.
 
 Archivos incluidos:
-- docs/exposicion/Guion_Video_B5.md
+- docs/exposicion/Guion_Video_B5.docx

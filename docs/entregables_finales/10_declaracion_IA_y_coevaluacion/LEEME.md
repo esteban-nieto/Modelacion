@@ -5,5 +5,5 @@
 Ver el borrador en la subcarpeta 10_declaracion_IA_y_coevaluacion. El equipo debe revisarlo, completarlo y firmarlo.
 
 Archivos incluidos:
-- declaracion_IA_BORRADOR.md
-- autoevaluacion_coevaluacion_PLANTILLA.md
+- declaracion_IA_BORRADOR.docx
+- autoevaluacion_coevaluacion_PLANTILLA.docx
