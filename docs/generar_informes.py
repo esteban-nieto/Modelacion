@@ -122,14 +122,14 @@ def informe_b():
         ],
     )
     doc.add_heading("2.2 Diagramas estructurados", 2)
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 3.5, "Figura 1. Diagrama de flujo del proceso")
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 3.5, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 3.0, "Figura 1. Diagrama de flujo del proceso")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 3.0, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
     doc.add_paragraph(
         "El bucle R1 refuerza la demanda: más pacientes atendidos aumentan la confianza de la comunidad y, con ella, las llegadas. "
         "Los bucles B1, B2 y B3 la limitan: una cola larga eleva el tiempo de espera, que provoca abandonos y reduce la confianza, y a la vez una cola mayor aumenta la atención. "
         "La capacidad de los profesionales actúa sobre el tiempo de espera y es la palanca principal de decisión."
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 3.5, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 3.0, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
     vensim = pd.read_csv(RAIZ / "diagramas" / "resultados_vensim.csv")
     doc.add_paragraph(
         "El modelo de flujos y niveles agrega los tres servicios en una sola cola, por lo que describe la tendencia del sistema y no sus tiempos de espera por servicio. "
@@ -140,7 +140,7 @@ def informe_b():
         ["Escenario", "Atendidos", "Abandonos", "Cola máxima", "Espera máx. (min)", "Confianza final"],
         [[r.escenario, r.atendidos, r.abandonos, r.cola_maxima, r.espera_maxima_min, r.confianza_final] for r in vensim.itertuples()],
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 3.5, "Figura 4. Árbol de problemas")
+    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 3.0, "Figura 4. Árbol de problemas")
     doc.add_heading("2.3 Supuestos, simplificaciones y limitaciones", 2)
     lista(
         doc,
@@ -216,7 +216,7 @@ def informe_b():
         ],
         "Media [IC 95 %]",
     )
-    figura(doc, SALIDAS / "espera_escenarios.png", 3.5, "Figura 5. Espera media por escenario")
+    figura(doc, SALIDAS / "espera_escenarios.png", 3.0, "Figura 5. Espera media por escenario")
     tabla(
         doc,
         ["Escenario frente al base", "Diferencia en espera media (min)", "Diferencia en espera prioritarios (min)"],
@@ -267,7 +267,7 @@ def informe_b():
             ["Pacientes sin atender por día", actual["pacientes_sin_atender_por_dia"], propuesta["pacientes_sin_atender_por_dia"]],
         ],
     )
-    figura(doc, SALIDAS / "monte_carlo_histograma.png", 3.5, "Figura 6. Distribución de la espera media diaria")
+    figura(doc, SALIDAS / "monte_carlo_histograma.png", 3.0, "Figura 6. Distribución de la espera media diaria")
     doc.add_paragraph(
         f"Interpretación: en el 90 % de las jornadas del sistema actual la espera media no supera {actual['p90']} minutos, frente a {propuesta['p90']} con fila única. "
         "La cola larga de la distribución (percentil 99) se asocia, según el diseño del ejercicio, con las jornadas en que falta un profesional (no se aisló su efecto por separado), por lo que la fila única no elimina el riesgo de las jornadas críticas; "
@@ -314,7 +314,7 @@ def informe_b():
         "Análisis de sensibilidad univariado del VPN.",
     )
     mc = financiero["monte_carlo_vpn"]
-    figura(doc, SALIDAS / "financiero_vpn.png", 3.5, "Figura 7. Distribución del VPN con 10 000 iteraciones")
+    figura(doc, SALIDAS / "financiero_vpn.png", 3.0, "Figura 7. Distribución del VPN con 10 000 iteraciones")
     doc.add_paragraph(
         f"Con incertidumbre simultánea en las variables, el VPN medio es {pesos(mc['media'])}, con un intervalo entre percentiles 5 y 95 de {pesos(mc['p5'])} a {pesos(mc['p95'])}, "
         f"y probabilidad de VPN positivo de {100 * mc['probabilidad_vpn_positivo']:.1f} %. La variable que más mueve el resultado es el valor asignado al tiempo del paciente, "
@@ -386,11 +386,9 @@ def informe_b():
             "Contratar un médico adicional no es financieramente sostenible con los supuestos adoptados.",
         ],
     )
-    doc.add_heading("Pendientes del módulo B2", 1)
-    doc.add_paragraph(
-        "El mapa comparativo con al menos tres casos locales y tres globales, el análisis crítico y la reseña de dos artículos arbitrados (uno en inglés) requieren fuentes verificadas por el equipo "
-        "y no se redactaron en este documento para no incluir referencias sin comprobar."
-    )
+    for par in doc.paragraphs:
+        if par.style.name in ("Normal", "List Bullet") and par.paragraph_format.space_after is None:
+            par.paragraph_format.space_after = Pt(4)
     doc.add_heading("Referencias", 1)
     for referencia in (
         "Aguiar, C., Rentería, S., Catumba-Ruiz, J. C., & Barrera, D. (2022). Use of discrete event simulation and genetic algorithms to estimate the necessary resources to respond in a timely manner in the Medical Emergency System in Bogotá. Medwave, 22(3), e002100. https://doi.org/10.5867/medwave.2022.03.002100",
@@ -407,6 +405,13 @@ def informe_b():
         pr = doc.add_paragraph(referencia)
         pr.paragraph_format.left_indent = Inches(0.5)
         pr.paragraph_format.first_line_indent = Inches(-0.5)
+        pr.paragraph_format.space_after = Pt(0)
+        pr.paragraph_format.line_spacing = 1.0
+        for run in pr.runs:
+            run.font.size = Pt(10)
+    for par in doc.paragraphs:
+        if par.style.name in ("Normal", "List Bullet"):
+            par.paragraph_format.space_after = Pt(4)
     return doc
 
 
@@ -506,6 +511,9 @@ def documento_a():
     doc.add_heading("10. Pendiente: revisión de usabilidad", 1)
     doc.add_paragraph("El enunciado exige una revisión con al menos cinco usuarios reales o simulados. Esa revisión debe realizarla el equipo y registrarse en la siguiente tabla.")
     tabla(doc, ["Usuario", "Tarea probada", "Hallazgo", "Ajuste realizado"], [["", "", "", ""] for _ in range(5)])
+    for par in doc.paragraphs:
+        if par.style.name in ("Normal", "List Bullet"):
+            par.paragraph_format.space_after = Pt(4)
     return doc
 
 
