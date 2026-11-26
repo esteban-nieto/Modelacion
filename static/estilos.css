@@ -117,3 +117,90 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.35); }
   .barra.menu-abierto nav { display: flex; }
   .grafico .fila { grid-template-columns: 110px 1fr 70px; }
 }
+
+/* ---------- Animaciones y mejoras visuales ---------- */
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes deslizar-desde-arriba {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes entrar-login {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulso {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(11, 110, 79, 0.35); }
+  70% { box-shadow: 0 0 0 8px rgba(11, 110, 79, 0); }
+}
+@keyframes crecer {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes desvanecer {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.login .tarjeta { animation: entrar-login 0.45s ease-out both; }
+.barra { animation: deslizar-desde-arriba 0.35s ease-out both; position: sticky; top: 0; z-index: 10; box-shadow: 0 1px 3px rgba(31, 41, 51, 0.06); }
+#contenido > * { animation: aparecer 0.4s ease-out both; }
+#contenido > *:nth-child(2) { animation-delay: 0.05s; }
+#contenido > *:nth-child(3) { animation-delay: 0.1s; }
+
+.tarjeta, .panel, .rejilla > * {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.rejilla > * { animation: aparecer 0.4s ease-out backwards; }
+.rejilla > *:nth-child(2) { animation-delay: 0.06s; }
+.rejilla > *:nth-child(3) { animation-delay: 0.12s; }
+.rejilla > *:nth-child(4) { animation-delay: 0.18s; }
+.rejilla > *:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(31, 41, 51, 0.08); }
+
+button, input, select {
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease, color 0.2s ease;
+}
+button:not(:disabled):hover { transform: translateY(-1px); }
+button:not(:disabled):active { transform: translateY(0) scale(0.98); }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(11, 110, 79, 0.35);
+  outline-offset: 2px;
+}
+input:focus, select:focus {
+  border-color: var(--primario);
+  box-shadow: 0 0 0 3px rgba(11, 110, 79, 0.15);
+  outline: none;
+}
+button.primario-pulso { animation: pulso 1.8s ease-out infinite; }
+
+.barra nav button { transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease; }
+.barra nav button:not(.activo):hover { background: var(--fondo); }
+.barra nav button.activo { box-shadow: 0 2px 6px rgba(11, 110, 79, 0.25); }
+
+tbody tr { transition: background-color 0.2s ease; }
+tbody tr:hover { background: #eef6f2; }
+tbody tr { animation: desvanecer 0.35s ease-out both; }
+th.ordenable::after { content: " \2195"; color: var(--suave); font-size: 12px; }
+
+#mensaje { transition: opacity 0.3s ease; }
+#mensaje:not(:empty) { animation: aparecer 0.3s ease-out both; }
+.error:not(:empty) { animation: aparecer 0.25s ease-out both; }
+.alerta { animation: aparecer 0.35s ease-out both; }
+
+.grafico .relleno { transform-origin: left center; animation: crecer 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.grafico .fila { animation: aparecer 0.4s ease-out both; }
+
+dialog[open] { animation: aparecer 0.25s ease-out both; }
+dialog::backdrop { animation: desvanecer 0.25s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
