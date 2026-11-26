@@ -340,7 +340,7 @@ def informe_b():
     doc.add_heading("11. Reflexión ética (B5)", 1)
     doc.add_paragraph(
         "Las decisiones que se derivan de una simulación afectan a personas, por lo que el ingeniero responde por la calidad del modelo y por el uso que se hace de sus resultados "
-        "(Bilbao Alberdi, 2010). Se analizan cinco aspectos."
+        "(Bilbao Alberdi et al., 2006). Se analizan cinco aspectos."
     )
     doc.add_heading("Sesgos en los datos", 2)
     doc.add_paragraph(
@@ -370,8 +370,10 @@ def informe_b():
 
     doc.add_heading("12. Declaración de uso de herramientas de IA", 1)
     doc.add_paragraph(
-        "Se usó el asistente Claude (Anthropic) para escribir código, scripts, modelos y borradores. El equipo verificó el resultado con las pruebas automáticas, "
-        "la revisión de resultados estadísticos y la prueba de la interfaz. Cada integrante debe poder explicar cualquier parte de lo entregado."
+        "Se usó el asistente Claude (Anthropic), con Claude Code, para escribir código, scripts, modelos y borradores. También se usó para el despliegue del sistema en Railway "
+        "(configuración del contenedor, puerto, variables de entorno y conexión con PostgreSQL) y para depurar errores de ejecución, como el fallo 502 causado por el driver de la base de datos. "
+        "El equipo verificó el resultado con las pruebas automáticas, la revisión de resultados estadísticos, la comprobación del sistema desplegado y la prueba de la interfaz. "
+        "Cada integrante debe poder explicar cualquier parte de lo entregado."
     )
 
     doc.add_heading("13. Conclusiones", 1)
@@ -392,11 +394,11 @@ def informe_b():
     doc.add_heading("Referencias", 1)
     for referencia in (
         "Aguiar, C., Rentería, S., Catumba-Ruiz, J. C., & Barrera, D. (2022). Use of discrete event simulation and genetic algorithms to estimate the necessary resources to respond in a timely manner in the Medical Emergency System in Bogotá. Medwave, 22(3), e002100. https://doi.org/10.5867/medwave.2022.03.002100",
-        "Bilbao Alberdi, G. (2010). Ética para ingenieros.",
+        "Bilbao Alberdi, G., Fuertes Pérez, F. J., & Guibert Ucín, J. M. (2006). Ética para ingenieros. Desclée De Brouwer.",
         "Dosi, C., Iori, M., Kramer, A., & Vignoli, M. (2023). Successful implementation of discrete event simulation: Integrating design thinking and simulation approach in an emergency department. Production Planning & Control, 34(13), 1233–1247. https://doi.org/10.1080/09537287.2021.1996651",
         "Hernández Chinchilla, D., Camacho Oliveros, M. Á., & Duarte Forero, E. L. (2017). Análisis del flujo de pacientes en el servicio de urgencias del Hospital Universitario La Samaritana a través de simulación discreta. Avances Investigación en Ingeniería, 14. https://doi.org/10.18041/1794-4953/avances.1.1289",
         "Medina Monterrosa, Y., & Arrieta-Canchila, K. (2013). Simulación de eventos discretos para optimizar recursos restrictivos del servicio de urgencias de un hospital. Revista Científica Teknos, 13(1), 55–66.",
-        "Pérez Peña, R. (2019). Modelación financiera: conceptos y aplicaciones.",
+        "Pérez Peña, R. (2019). Modelación financiera: conceptos y aplicaciones. Universidad Piloto de Colombia.",
         "Sánchez Castillo, V., Gómez Cano, C. A., & Gonzalez-Argote, J. (2023). Telemedicine and mHealth applications for health monitoring in rural communities in Colombia: A systematic review. EAI Endorsed Transactions on Pervasive Health and Technology, 9(1). https://doi.org/10.4108/eetpht.9.3400",
         "Team SimPy. (s. f.). SimPy: Discrete event simulation for Python (versión 4.1.2) [Software]. https://simpy.readthedocs.io",
         "Ventana Systems. (s. f.). Vensim PLE (versión 11.0) [Software]. https://vensim.com",
