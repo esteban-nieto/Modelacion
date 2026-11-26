@@ -48,6 +48,25 @@ Usuarios de demostración (cambian con las variables `CLAVE_ADMIN`, `CLAVE_OPERA
 | operador | operador@saludrural.co | Operador12345 |
 | consulta | consulta@saludrural.co | Consulta12345 |
 
+## Despliegue en Railway
+
+El sistema está desplegado en Railway:
+
+- Aplicación: https://modelacion-api-production.up.railway.app
+- Documentación interactiva de la API: https://modelacion-api-production.up.railway.app/docs
+
+El proyecto de Railway se llama `modelacion-turnos` y tiene dos servicios: `modelacion-api` (la aplicación, construida desde el `Dockerfile`) y `Postgres` (la base de datos). El contenedor usa el puerto que asigna Railway en la variable `PORT`, y `app/config.py` convierte la URL `postgresql://` al driver `psycopg2`.
+
+Variables que deben estar definidas en el servicio `modelacion-api`: `SECRET_KEY`, `DATABASE_URL` (la de Postgres de Railway) y, si se cambian, `CLAVE_ADMIN`, `CLAVE_OPERADOR` y `CLAVE_CONSULTA`.
+
+Para publicar una nueva versión desde la carpeta local, con la CLI de Railway instalada y sesión iniciada:
+
+```powershell
+railway up -s modelacion-api
+```
+
+Los usuarios de demostración son los de la sección de ejecución local.
+
 ## Pruebas
 
 ```powershell
