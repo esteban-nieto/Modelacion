@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Logo de turnos de salud rural">
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0b6e4f"/>
+  <path d="M26 12h12v14h14v12H38v14H26V38H12V26h14z" fill="#ffffff"/>
+  <circle cx="48" cy="48" r="10" fill="#f4f6f8"/>
+  <path d="M48 42v6l4 3" fill="none" stroke="#0b6e4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

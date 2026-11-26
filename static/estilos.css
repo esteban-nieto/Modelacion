@@ -204,3 +204,7 @@ dialog::backdrop { animation: desvanecer 0.25s ease-out both; }
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- Logo ---------- */
+.logo { justify-self: center; width: 56px; height: 56px; animation: aparecer 0.5s ease-out both; }
+.logo-barra { width: 32px; height: 32px; flex: none; }
