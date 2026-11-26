@@ -1,18 +1,19 @@
 from docx.enum.text import WD_BREAK
+from docx.shared import Inches
 
 from generar_informes import DESTINO, FIGURAS_DOCS, documento, figura, lista, tabla
 
 # Solo fuentes cuyos datos bibliográficos se comprobaron en búsqueda (editorial, DOI o PubMed).
 # Lo que no se pudo comprobar NO se incluye: ver la sección "Pendientes" del documento.
 REFERENCIAS = [
-    "Hernández Chinchilla, D., Camacho Oliveros, M. Á., & Duarte Forero, E. L. (2017). Análisis del flujo de pacientes en el servicio de urgencias del Hospital Universitario La Samaritana a través de simulación discreta. Avances Investigación en Ingeniería, 14. https://doi.org/10.18041/1794-4953/avances.1.1289",
     "Aguiar, C., Rentería, S., Catumba-Ruiz, J. C., & Barrera, D. (2022). Use of discrete event simulation and genetic algorithms to estimate the necessary resources to respond in a timely manner in the Medical Emergency System in Bogotá. Medwave, 22(3), e002100. https://doi.org/10.5867/medwave.2022.03.002100",
+    "Dosi, C., Iori, M., Kramer, A., & Vignoli, M. (2023). Successful implementation of discrete event simulation: Integrating design thinking and simulation approach in an emergency department. Production Planning & Control, 34(13), 1233-1247. https://doi.org/10.1080/09537287.2021.1996651",
+    "Hernández Chinchilla, D., Camacho Oliveros, M. Á., & Duarte Forero, E. L. (2017). Análisis del flujo de pacientes en el servicio de urgencias del Hospital Universitario La Samaritana a través de simulación discreta. Avances Investigación en Ingeniería, 14. https://doi.org/10.18041/1794-4953/avances.1.1289",
     "Medina Monterrosa, Y., & Arrieta-Canchila, K. (2013). Simulación de eventos discretos para optimizar recursos restrictivos del servicio de urgencias de un hospital. Revista Científica Teknos, 13(1), 55-66.",
+    "Revisión sistemática de sensores de bajo costo para el monitoreo de la calidad del aire en América Latina. (2026). ES Engineering and Science, 15(1). https://doi.org/10.18607/ES20261521055",
     "Sánchez Castillo, V., Gómez Cano, C. A., & Gonzalez-Argote, J. (2023). Telemedicine and mHealth applications for health monitoring in rural communities in Colombia: A systematic review. EAI Endorsed Transactions on Pervasive Health and Technology, 9(1). https://doi.org/10.4108/eetpht.9.3400",
     "Xie, J., Zhuang, W., Ang, M., Chou, M. C., Luo, L., & Yao, D. D. (2021). Analytics for hospital resource planning: Two case studies. Production and Operations Management. https://doi.org/10.1111/poms.13158",
-    "Dosi, C., Iori, M., Kramer, A., & Vignoli, M. (2023). Successful implementation of discrete event simulation: Integrating design thinking and simulation approach in an emergency department. Production Planning & Control, 34(13), 1233-1247. https://doi.org/10.1080/09537287.2021.1996651",
-    "Comis, M., et al. (2021). Patients, primary care, and policy: Agent-based simulation modeling for health care decision support. Health Care Management Science, 24(4). https://doi.org/10.1007/s10729-021-09556-2",
-    "Revisión sistemática de sensores de bajo costo para el monitoreo de la calidad del aire en América Latina (2026). ES Engineering and Science, 15(1). https://doi.org/10.18607/ES20261521055",
+    "[Referencia pendiente] Comis et al. (2021). Patients, primary care, and policy: Agent-based simulation modeling for health care decision support. Health Care Management Science, 24(4). https://doi.org/10.1007/s10729-021-09556-2. Falta la lista completa de autores para la entrada APA.",
 ]
 
 # Casos de simulación para decidir. Solo se incluyen los verificados con fuente primaria.
@@ -125,7 +126,9 @@ def b2():
     )
     doc.add_heading("Referencias", 1)
     for referencia in REFERENCIAS:
-        doc.add_paragraph(referencia)
+        pr = doc.add_paragraph(referencia)
+        pr.paragraph_format.left_indent = Inches(0.5)
+        pr.paragraph_format.first_line_indent = Inches(-0.5)
     return doc
 
 

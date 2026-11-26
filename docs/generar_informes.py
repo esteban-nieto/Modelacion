@@ -189,7 +189,7 @@ def informe_b():
         [["Espera media diaria (min)", validacion["espera_diaria_real_media"], validacion["espera_diaria_simulada_media"]]],
     )
     doc.add_paragraph(
-        f"Con la prueba t de Welch (p = {validacion['welch_t_p']}), la de Kolmogorov-Smirnov de dos muestras (p = {validacion['ks_dos_muestras_p']}) y la de Mann-Whitney (p = {validacion['mann_whitney_p']}) "
+        f"Con la prueba t de Welch (p = {str(validacion['welch_t_p']).replace('.', ',')}), la de Kolmogorov-Smirnov de dos muestras (p = {str(validacion['ks_dos_muestras_p']).replace('.', ',')}) y la de Mann-Whitney (p = {str(validacion['mann_whitney_p']).replace('.', ',')}) "
         f"no se rechaza la igualdad. {validacion['conclusion']}."
     )
 
@@ -402,7 +402,9 @@ def informe_b():
         "Ventana Systems. (s. f.). Vensim PLE (versión 11.0) [Software]. https://vensim.com",
         "Xie, J., Zhuang, W., Ang, M., Chou, M. C., Luo, L., & Yao, D. D. (2021). Analytics for hospital resource planning: Two case studies. Production and Operations Management. https://doi.org/10.1111/poms.13158",
     ):
-        doc.add_paragraph(referencia)
+        pr = doc.add_paragraph(referencia)
+        pr.paragraph_format.left_indent = Inches(0.5)
+        pr.paragraph_format.first_line_indent = Inches(-0.5)
     return doc
 
 
