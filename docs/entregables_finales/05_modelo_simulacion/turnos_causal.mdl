@@ -1,0 +1,107 @@
+{UTF-8}
+Llegadas de pacientes= A FUNCTION OF(Confianza comunitaria)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+Cola de espera= A FUNCTION OF(Llegadas de pacientes, Abandonos, Inicio de atencion)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+Tiempo de espera= A FUNCTION OF(Cola de espera, Profesionales disponibles)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+Abandonos= A FUNCTION OF(Tiempo de espera)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+Inicio de atencion= A FUNCTION OF(Cola de espera, Profesionales disponibles)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+Pacientes atendidos= A FUNCTION OF(Inicio de atencion)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+Confianza comunitaria= A FUNCTION OF(Pacientes atendidos, Tiempo de espera, Abandonos)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+Profesionales disponibles= A FUNCTION OF(Profesionales disponibles)
+	~	Dmnl
+	~	Variable del diagrama causal
+	|
+
+FINAL TIME= 12
+	~	Hora
+	~	Parametro de control de la simulacion
+	|
+
+INITIAL TIME= 0
+	~	Hora
+	~	Parametro de control de la simulacion
+	|
+
+TIME STEP= 0.0625
+	~	Hora
+	~	Parametro de control de la simulacion
+	|
+
+SAVEPER= TIME STEP
+	~	Hora
+	~	Frecuencia de registro
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Diagrama causal
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Llegadas de pacientes,160,250,40,20,8,3,0,0,0,0,0,0
+10,2,Cola de espera,400,250,40,20,8,3,0,0,0,0,0,0
+10,3,Tiempo de espera,640,250,40,20,8,3,0,0,0,0,0,0
+10,4,Abandonos,640,400,40,20,8,3,0,0,0,0,0,0
+10,5,Inicio de atencion,400,400,40,20,8,3,0,0,0,0,0,0
+10,6,Pacientes atendidos,160,400,40,20,8,3,0,0,0,0,0,0
+10,7,Confianza comunitaria,400,100,40,20,8,3,0,0,0,0,0,0
+10,8,Profesionales disponibles,400,520,40,20,8,3,0,0,0,0,0,0
+1,9,1,2,0,0,43,0,0,192,0,-1--1--1,,1|(280,250)|
+1,10,2,3,0,0,43,0,0,192,0,-1--1--1,,1|(520,250)|
+1,11,3,4,0,0,43,0,0,192,0,-1--1--1,,1|(640,325)|
+1,12,4,2,0,0,45,0,0,192,0,-1--1--1,,1|(520,325)|
+1,13,2,5,0,0,43,0,0,192,0,-1--1--1,,1|(400,325)|
+1,14,5,2,0,0,45,0,0,192,0,-1--1--1,,1|(400,325)|
+1,15,5,6,0,0,43,0,0,192,0,-1--1--1,,1|(280,400)|
+1,16,6,7,0,0,43,0,0,192,0,-1--1--1,,1|(280,250)|
+1,17,3,7,0,0,45,0,0,192,0,-1--1--1,,1|(520,175)|
+1,18,4,7,0,0,45,0,0,192,0,-1--1--1,,1|(520,250)|
+1,19,7,1,0,0,43,0,0,192,0,-1--1--1,,1|(280,175)|
+1,20,8,5,0,0,43,0,0,192,0,-1--1--1,,1|(400,460)|
+1,21,8,3,0,0,45,0,0,192,0,-1--1--1,,1|(520,385)|
+///---\\\
+:L<%^E!@
+1:Current.vdf
+9:Current
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:Cola de espera
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+42:1
+24:0
+25:12
+26:12

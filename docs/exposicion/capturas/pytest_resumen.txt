@@ -1,0 +1,3 @@
+TOTAL                            569     18    97%
+Required test coverage of 60% reached. Total coverage: 96.84%
+49 passed, 1 warning in 112.71s (0:01:52)

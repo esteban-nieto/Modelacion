@@ -1,7 +1,7 @@
 """Revisión de usabilidad SIMULADA (recorrido automatizado por perfiles).
 
 No sustituye a usuarios reales: la guía pide 5 usuarios "reales o simulados". Cada perfil
-recorre las seis tareas de docs/encuesta_usabilidad.md contra la API real, con el rol que
+recorre las seis tareas de docs/encuesta_usabilidad.docx contra la API real, con el rol que
 tendría en el puesto. El resultado es lo que responde el sistema, no la opinión de una persona.
 Los hallazgos de la fila "Usuario" de la tabla deben complementarse con pruebas con personas reales.
 

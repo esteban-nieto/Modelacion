@@ -399,6 +399,12 @@ function dibujarTablero() {
           tarjetaIndicador("Atención media real (min)", reales.atencion_media_min),
           tarjetaIndicador("Ocupación media real (%)", reales.ocupacion_media_pct),
         ]),
+        crear("h3", { texto: "Espera media: real frente a simulación" }),
+        graficoComparativo([
+          ["Real", reales.espera_media_min],
+          ["Simulación base", proyectados && proyectados.base.espera_media_min.media],
+          [`Recomendado`, proyectados && proyectados.recomendado.espera_media_min.media],
+        ]),
         crear("h3", { texto: "Real frente a simulación" }),
         tablaSimple(
           ["Indicador", "Real", "Simulación base", proyectados ? `Recomendado: ${proyectados.recomendado.nombre}` : "Recomendado"],
@@ -412,6 +418,22 @@ function dibujarTablero() {
     })
     .catch((error) => avisar(error.message));
   return contenedor;
+}
+
+// Barras horizontales; los valores sin simulación se omiten. El ancho se fija con CSSOM
+// (style.width) porque la política CSP no permite atributos style en línea.
+function graficoComparativo(filas) {
+  const validas = filas.filter(([, valor]) => typeof valor === "number");
+  const maximo = Math.max(1, ...validas.map(([, valor]) => valor));
+  return crear(
+    "div",
+    { class: "grafico", role: "img", "aria-label": validas.map(([n, v]) => `${n}: ${v} minutos`).join(", ") },
+    validas.map(([nombre, valor], i) => {
+      const relleno = crear("div", { class: i === 0 ? "relleno" : "relleno simulado" });
+      relleno.style.width = `${(100 * valor) / maximo}%`;
+      return crear("div", { class: "fila" }, crear("span", { texto: nombre }), crear("div", { class: "pista" }, relleno), crear("span", { texto: `${valor} min` }));
+    })
+  );
 }
 
 function tarjetaIndicador(etiqueta, valor) {
@@ -516,7 +538,13 @@ function disponibles() {
   return lista;
 }
 
+function cerrarMenuMovil() {
+  document.querySelector(".barra").classList.remove("menu-abierto");
+  $("#abrir-menu").setAttribute("aria-expanded", "false");
+}
+
 function mostrar(clave) {
+  cerrarMenuMovil();
   avisar("");
   for (const boton of document.querySelectorAll("#menu button")) boton.classList.toggle("activo", boton.dataset.vista === clave);
   const contenido = vistas[clave] ? vistas[clave].dibujar() : dibujarLista(clave);
@@ -562,6 +590,10 @@ $("#form-login").addEventListener("submit", async (evento) => {
 });
 
 $("#salir").addEventListener("click", cerrarSesion);
+$("#abrir-menu").addEventListener("click", () => {
+  const abierto = document.querySelector(".barra").classList.toggle("menu-abierto");
+  $("#abrir-menu").setAttribute("aria-expanded", String(abierto));
+});
 $("#cancelar-dialogo").addEventListener("click", () => $("#dialogo").close());
 
 if (sesion.token) entrar().catch(cerrarSesion);

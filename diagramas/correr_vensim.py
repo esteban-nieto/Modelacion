@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -10,7 +11,9 @@ ESCENARIOS = {
     "Demanda +25 %": {"Factor de demanda": 1.25},
     "Un profesional adicional": {"Profesionales": 5},
     "Demanda +25 % y un profesional adicional": {"Factor de demanda": 1.25, "Profesionales": 5},
+    "Demanda +80 % (saturacion)": {"Factor de demanda": 1.8},
 }
+CALIBRACION = CARPETA / "calibracion_vensim.json"
 COLUMNAS = ["Cola de espera", "En atencion", "Atendidos", "Abandonos acumulados", "Confianza comunitaria"]
 
 
@@ -36,7 +39,23 @@ def resumen():
     return pd.DataFrame(filas)
 
 
+def validar():
+    """Compara los pacientes atendidos por día del modelo base con los datos reales del CRUD."""
+    real = json.loads(CALIBRACION.read_text(encoding="utf-8"))["atendidas_por_dia_validacion"]  # días no usados para calibrar
+    simulado = correr({})["Atendidos"].iloc[-1]
+    error = 100 * (simulado - real) / real
+    return {
+        "atendidas_por_dia_real": real,
+        "atendidas_por_dia_vensim": round(float(simulado), 2),
+        "error_relativo_pct": round(float(error), 2),
+        "conclusion": "Diferencia menor al 5 %: el modelo reproduce el volumen real" if abs(error) < 5 else "Diferencia mayor al 5 %: revisar supuestos",
+    }
+
+
 if __name__ == "__main__":
     tabla = resumen()
     tabla.to_csv(CARPETA / "resultados_vensim.csv", index=False)
     print(tabla.to_string(index=False))
+    validacion = validar()
+    (CARPETA / "validacion_vensim.json").write_text(json.dumps(validacion, indent=2, ensure_ascii=False), encoding="utf-8")
+    print(json.dumps(validacion, indent=2, ensure_ascii=False))

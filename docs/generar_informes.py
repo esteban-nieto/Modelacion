@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Inches, Pt
+from docx.shared import RGBColor, Inches, Pt
 
 RAIZ = Path(__file__).resolve().parent.parent
 SALIDAS = RAIZ / "simulacion" / "salidas"
@@ -31,6 +31,8 @@ def documento(titulo, subtitulo):
     estilo = doc.styles["Normal"]
     estilo.font.name = "Times New Roman"
     estilo.font.size = Pt(12)
+    for nombre in ("Title", "Heading 1", "Heading 2", "Heading 3"):
+        doc.styles[nombre].font.color.rgb = RGBColor(0, 0, 0)
     doc.add_heading(titulo, 0)
     parrafo = doc.add_paragraph(subtitulo)
     parrafo.alignment = WD_ALIGN_PARAGRAPH.LEFT
@@ -90,6 +92,11 @@ def informe_b():
         "El mismo proceso lo gestiona el sistema CRUD, que registra cada cita con su hora de llegada, inicio y fin de atención."
     )
     doc.add_paragraph(
+        "La simulación se ha usado para decidir recursos de urgencias y de emergencias en Colombia y en otros países "
+        "(Medina Monterrosa y Arrieta-Canchila, 2013; Aguiar et al., 2022; Hernández Chinchilla et al., 2017; Xie et al., 2021; Dosi et al., 2023). "
+        "En el contexto rural colombiano, las aplicaciones electrónicas de telemedicina y mHealth se estudian para el monitoreo de la salud (Sánchez Castillo et al., 2023)."
+    )
+    doc.add_paragraph(
         "Los datos del puesto de salud usados en este informe son sintéticos: se generaron con una semilla fija a partir de distribuciones conocidas para 60 jornadas hábiles, "
         "porque no se dispone de registros reales anonimizados. El procedimiento es el mismo que se seguiría con datos reales: exportar el histórico desde el CRUD, ajustar distribuciones, simular y decidir. "
         "Las conclusiones numéricas describen el modelo y no deben presentarse como mediciones de un puesto real."
@@ -115,14 +122,14 @@ def informe_b():
         ],
     )
     doc.add_heading("2.2 Diagramas estructurados", 2)
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 6.3, "Figura 1. Diagrama de flujo del proceso")
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 6.3, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 3.0, "Figura 1. Diagrama de flujo del proceso")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 3.0, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
     doc.add_paragraph(
         "El bucle R1 refuerza la demanda: más pacientes atendidos aumentan la confianza de la comunidad y, con ella, las llegadas. "
         "Los bucles B1, B2 y B3 la limitan: una cola larga eleva el tiempo de espera, que provoca abandonos y reduce la confianza, y a la vez una cola mayor aumenta la atención. "
         "La capacidad de los profesionales actúa sobre el tiempo de espera y es la palanca principal de decisión."
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 6.5, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 3.0, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
     vensim = pd.read_csv(RAIZ / "diagramas" / "resultados_vensim.csv")
     doc.add_paragraph(
         "El modelo de flujos y niveles agrega los tres servicios en una sola cola, por lo que describe la tendencia del sistema y no sus tiempos de espera por servicio. "
@@ -133,7 +140,7 @@ def informe_b():
         ["Escenario", "Atendidos", "Abandonos", "Cola máxima", "Espera máx. (min)", "Confianza final"],
         [[r.escenario, r.atendidos, r.abandonos, r.cola_maxima, r.espera_maxima_min, r.confianza_final] for r in vensim.itertuples()],
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 6.3, "Figura 4. Árbol de problemas")
+    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 3.0, "Figura 4. Árbol de problemas")
     doc.add_heading("2.3 Supuestos, simplificaciones y limitaciones", 2)
     lista(
         doc,
@@ -159,22 +166,19 @@ def informe_b():
         [[r.servicio, r.variable, r.distribucion, r.n, f"{r.ks_p:.3f}", f"{r.chi2_p:.3f}"] for r in elegidas.itertuples()],
     )
     doc.add_paragraph(
-        "El valor p de KS con parámetros estimados es aproximado (tiende a ser conservador). Para las llegadas exponenciales la tasa se corrigió incluyendo el último intervalo censurado por el cierre de cada jornada "
-        "(tasa = llegadas totales dividido por minutos observados); omitirlo sobreestimaba la carga y llevó a rechazar la validación en una primera versión."
+        "El valor p de KS con parámetros estimados es aproximado. La tasa de llegadas incluye el último intervalo censurado por el cierre de la jornada."
     )
 
     doc.add_heading("4. Diseño del modelo de simulación", 1)
     doc.add_paragraph(
-        "El modelo de eventos discretos se construyó en SimPy, una de las herramientas equivalentes aceptadas en el enunciado. Las locaciones son las filas de cada servicio, las entidades son los pacientes, "
-        "los recursos son los profesionales (recursos con prioridad de capacidad 1 por profesional, o capacidad igual al número de profesionales en el esquema de fila única), las llegadas siguen los procesos ajustados, "
-        "el turno es una jornada de 540 minutos y el enrutamiento asigna al paciente a un profesional al azar (sistema actual) o al primero libre (fila única)."
+        "El modelo de eventos discretos se construyó en SimPy: cada servicio es una fila, los pacientes son las entidades, los profesionales son los recursos y la jornada dura 540 minutos."
     )
 
     doc.add_heading("5. Verificación y validación", 1)
     lista(
         doc,
         [
-            "Verificación: pruebas automáticas de consistencia (más recursos reducen la espera, más demanda la aumenta, la prioridad favorece a los pacientes prioritarios) y comparación del modelo SimPy con una implementación independiente por recursión de colas, con diferencia menor a 3 minutos en 300 jornadas.",
+            "Verificación: pruebas de consistencia (más recursos reducen la espera; más demanda la aumenta; la prioridad favorece a los prioritarios).",
             "Casos extremos: con capacidad ampliada la espera tiende a cero y con demanda +40 % crece de forma marcada (véase sensibilidad).",
             "Validación: comparación de la espera media diaria real (60 jornadas) con la simulada (400 jornadas).",
         ],
@@ -185,7 +189,7 @@ def informe_b():
         [["Espera media diaria (min)", validacion["espera_diaria_real_media"], validacion["espera_diaria_simulada_media"]]],
     )
     doc.add_paragraph(
-        f"Con la prueba t de Welch (p = {validacion['welch_t_p']}), la de Kolmogorov-Smirnov de dos muestras (p = {validacion['ks_dos_muestras_p']}) y la de Mann-Whitney (p = {validacion['mann_whitney_p']}) "
+        f"Con la prueba t de Welch (p = {str(validacion['welch_t_p']).replace('.', ',')}), la de Kolmogorov-Smirnov de dos muestras (p = {str(validacion['ks_dos_muestras_p']).replace('.', ',')}) y la de Mann-Whitney (p = {str(validacion['mann_whitney_p']).replace('.', ',')}) "
         f"no se rechaza la igualdad. {validacion['conclusion']}."
     )
 
@@ -212,7 +216,7 @@ def informe_b():
         ],
         "Media [IC 95 %]",
     )
-    figura(doc, SALIDAS / "espera_escenarios.png", 6.0, "Figura 5. Espera media por escenario")
+    figura(doc, SALIDAS / "espera_escenarios.png", 3.0, "Figura 5. Espera media por escenario")
     tabla(
         doc,
         ["Escenario frente al base", "Diferencia en espera media (min)", "Diferencia en espera prioritarios (min)"],
@@ -263,7 +267,7 @@ def informe_b():
             ["Pacientes sin atender por día", actual["pacientes_sin_atender_por_dia"], propuesta["pacientes_sin_atender_por_dia"]],
         ],
     )
-    figura(doc, SALIDAS / "monte_carlo_histograma.png", 6.0, "Figura 6. Distribución de la espera media diaria")
+    figura(doc, SALIDAS / "monte_carlo_histograma.png", 3.0, "Figura 6. Distribución de la espera media diaria")
     doc.add_paragraph(
         f"Interpretación: en el 90 % de las jornadas del sistema actual la espera media no supera {actual['p90']} minutos, frente a {propuesta['p90']} con fila única. "
         "La cola larga de la distribución (percentil 99) se asocia, según el diseño del ejercicio, con las jornadas en que falta un profesional (no se aisló su efecto por separado), por lo que la fila única no elimina el riesgo de las jornadas críticas; "
@@ -271,6 +275,7 @@ def informe_b():
     )
 
     doc.add_heading("9. Modelo financiero", 1)
+    doc.add_paragraph("El análisis financiero usa los conceptos de flujo de caja, valor presente neto y sensibilidad de Pérez Peña (2019).")
     sup, fu, med = financiero["supuestos"], financiero["fila_unica_con_prioridad"], financiero["medico_adicional"]
     doc.add_paragraph(
         "El beneficio se valora como el tiempo de espera que los pacientes dejan de perder. Los valores monetarios son supuestos del equipo, no cifras verificadas, y deben reemplazarse por datos reales antes de decidir."
@@ -309,7 +314,7 @@ def informe_b():
         "Análisis de sensibilidad univariado del VPN.",
     )
     mc = financiero["monte_carlo_vpn"]
-    figura(doc, SALIDAS / "financiero_vpn.png", 6.0, "Figura 7. Distribución del VPN con 10 000 iteraciones")
+    figura(doc, SALIDAS / "financiero_vpn.png", 3.0, "Figura 7. Distribución del VPN con 10 000 iteraciones")
     doc.add_paragraph(
         f"Con incertidumbre simultánea en las variables, el VPN medio es {pesos(mc['media'])}, con un intervalo entre percentiles 5 y 95 de {pesos(mc['p5'])} a {pesos(mc['p95'])}, "
         f"y probabilidad de VPN positivo de {100 * mc['probabilidad_vpn_positivo']:.1f} %. La variable que más mueve el resultado es el valor asignado al tiempo del paciente, "
@@ -335,7 +340,7 @@ def informe_b():
     doc.add_heading("11. Reflexión ética (B5)", 1)
     doc.add_paragraph(
         "Las decisiones que se derivan de una simulación afectan a personas, por lo que el ingeniero responde por la calidad del modelo y por el uso que se hace de sus resultados "
-        "(Bilbao Alberdi, 2010). Se analizan cinco aspectos."
+        "(Bilbao Alberdi et al., 2006). Se analizan cinco aspectos."
     )
     doc.add_heading("Sesgos en los datos", 2)
     doc.add_paragraph(
@@ -365,35 +370,48 @@ def informe_b():
 
     doc.add_heading("12. Declaración de uso de herramientas de IA", 1)
     doc.add_paragraph(
-        "Se utilizó el asistente Claude (Anthropic) como apoyo para escribir el código del sistema, los scripts de simulación, los modelos de Vensim y el borrador de estos documentos. "
-        "El equipo verificó el funcionamiento ejecutando las pruebas automáticas (cobertura de la capa de negocio superior al 60 %), revisando los resultados estadísticos y probando la interfaz. "
-        "Cada integrante debe poder explicar y modificar en vivo cualquier parte de lo entregado; lo que no pueda explicar debe considerarse no entregado."
+        "Se usó el asistente Claude (Anthropic), con Claude Code, para escribir código, scripts, modelos y borradores. También se usó para el despliegue del sistema en Railway "
+        "(configuración del contenedor, puerto, variables de entorno y conexión con PostgreSQL) y para depurar errores de ejecución, como el fallo 502 causado por el driver de la base de datos. "
+        "El equipo verificó el resultado con las pruebas automáticas, la revisión de resultados estadísticos, la comprobación del sistema desplegado y la prueba de la interfaz. "
+        "Cada integrante debe poder explicar cualquier parte de lo entregado."
     )
 
     doc.add_heading("13. Conclusiones", 1)
     lista(
         doc,
         [
-            f"Reorganizar las filas en una fila única por servicio con prioridad reduce la espera media de {esc['base']['metricas']['espera_media_min']['media']:.1f} a {esc[recomendado]['metricas']['espera_media_min']['media']:.1f} minutos sin costo adicional de personal.",
-            "El modelo reproduce el comportamiento de los datos (p > 0,05 en tres pruebas), con la salvedad de que los datos son sintéticos.",
-            "El Monte Carlo muestra que las ausencias de profesionales generan las jornadas críticas, que requieren un plan de contingencia.",
-            "La alternativa de contratar un médico adicional no es financieramente sostenible con los supuestos adoptados.",
-            "Los resultados se integran al sistema mediante la cola priorizada, el profesional sugerido, las alertas y el tablero comparativo.",
+            f"Una fila única por servicio con prioridad reduce la espera media de {esc['base']['metricas']['espera_media_min']['media']:.1f} a {esc[recomendado]['metricas']['espera_media_min']['media']:.1f} minutos sin costo de personal.",
+            "El modelo reproduce el comportamiento de los datos (p > 0,05), con la salvedad de que los datos son sintéticos.",
+            "Las ausencias de profesionales generan las jornadas críticas y requieren un plan de contingencia.",
+            "Contratar un médico adicional no es financieramente sostenible con los supuestos adoptados.",
         ],
     )
-    doc.add_heading("Pendientes del módulo B2", 1)
-    doc.add_paragraph(
-        "El mapa comparativo con al menos tres casos locales y tres globales, el análisis crítico y la reseña de dos artículos arbitrados (uno en inglés) requieren fuentes verificadas por el equipo "
-        "y no se redactaron en este documento para no incluir referencias sin comprobar."
-    )
+    for par in doc.paragraphs:
+        if par.style.name in ("Normal", "List Bullet") and par.paragraph_format.space_after is None:
+            par.paragraph_format.space_after = Pt(4)
     doc.add_heading("Referencias", 1)
     for referencia in (
-        "Bilbao Alberdi, G. (2010). Ética para ingenieros.",
-        "Pérez Peña, R. (2019). Modelación financiera: conceptos y aplicaciones.",
-        "Team SimPy. (s. f.). SimPy: Discrete event simulation for Python. https://simpy.readthedocs.io",
-        "Ventana Systems. (s. f.). Vensim. https://vensim.com",
+        "Aguiar, C., Rentería, S., Catumba-Ruiz, J. C., & Barrera, D. (2022). Use of discrete event simulation and genetic algorithms to estimate the necessary resources to respond in a timely manner in the Medical Emergency System in Bogotá. Medwave, 22(3), e002100. https://doi.org/10.5867/medwave.2022.03.002100",
+        "Bilbao Alberdi, G., Fuertes Pérez, F. J., & Guibert Ucín, J. M. (2006). Ética para ingenieros. Desclée De Brouwer.",
+        "Dosi, C., Iori, M., Kramer, A., & Vignoli, M. (2023). Successful implementation of discrete event simulation: Integrating design thinking and simulation approach in an emergency department. Production Planning & Control, 34(13), 1233–1247. https://doi.org/10.1080/09537287.2021.1996651",
+        "Hernández Chinchilla, D., Camacho Oliveros, M. Á., & Duarte Forero, E. L. (2017). Análisis del flujo de pacientes en el servicio de urgencias del Hospital Universitario La Samaritana a través de simulación discreta. Avances Investigación en Ingeniería, 14. https://doi.org/10.18041/1794-4953/avances.1.1289",
+        "Medina Monterrosa, Y., & Arrieta-Canchila, K. (2013). Simulación de eventos discretos para optimizar recursos restrictivos del servicio de urgencias de un hospital. Revista Científica Teknos, 13(1), 55–66.",
+        "Pérez Peña, R. (2019). Modelación financiera: conceptos y aplicaciones. Universidad Piloto de Colombia.",
+        "Sánchez Castillo, V., Gómez Cano, C. A., & Gonzalez-Argote, J. (2023). Telemedicine and mHealth applications for health monitoring in rural communities in Colombia: A systematic review. EAI Endorsed Transactions on Pervasive Health and Technology, 9(1). https://doi.org/10.4108/eetpht.9.3400",
+        "Team SimPy. (s. f.). SimPy: Discrete event simulation for Python (versión 4.1.2) [Software]. https://simpy.readthedocs.io",
+        "Ventana Systems. (s. f.). Vensim PLE (versión 11.0) [Software]. https://vensim.com",
+        "Xie, J., Zhuang, W., Ang, M., Chou, M. C., Luo, L., & Yao, D. D. (2021). Analytics for hospital resource planning: Two case studies. Production and Operations Management. https://doi.org/10.1111/poms.13158",
     ):
-        doc.add_paragraph(referencia)
+        pr = doc.add_paragraph(referencia)
+        pr.paragraph_format.left_indent = Inches(0.5)
+        pr.paragraph_format.first_line_indent = Inches(-0.5)
+        pr.paragraph_format.space_after = Pt(0)
+        pr.paragraph_format.line_spacing = 1.0
+        for run in pr.runs:
+            run.font.size = Pt(10)
+    for par in doc.paragraphs:
+        if par.style.name in ("Normal", "List Bullet"):
+            par.paragraph_format.space_after = Pt(4)
     return doc
 
 
@@ -490,9 +508,12 @@ def documento_a():
         "Las pruebas de integración recorren la API con cada rol (autenticación, permisos, CRUD, borrado lógico, validaciones, conflictos, paginación, auditoría, reportes y tablero) y las unitarias verifican el hash, los tokens y los cálculos de negocio. "
         "El pipeline de GitHub Actions las ejecuta en cada push y exige una cobertura mínima del 60 %."
     )
-    doc.add_heading("10. Pendiente: revisión de usabilidad", 1)
+    doc.add_heading("10. Revisión de usabilidad (simulada)", 1)
     doc.add_paragraph("El enunciado exige una revisión con al menos cinco usuarios reales o simulados. Esa revisión debe realizarla el equipo y registrarse en la siguiente tabla.")
     tabla(doc, ["Usuario", "Tarea probada", "Hallazgo", "Ajuste realizado"], [["", "", "", ""] for _ in range(5)])
+    for par in doc.paragraphs:
+        if par.style.name in ("Normal", "List Bullet"):
+            par.paragraph_format.space_after = Pt(4)
     return doc
 
 
@@ -511,7 +532,7 @@ def documento_bitacora():
     tabla(
         doc,
         ["Integrante", "Roles", "Responsabilidades"],
-        [["esteban-nieto", "Líder, desarrollo, simulación y documentación", "Todas las tareas del proyecto: sistema CRUD, modelo de simulación, modelos de Vensim, informes, pruebas, despliegue y sustentación"]],
+        [["Gaddiel Esteban Nieto Rojas", "Líder, desarrollo, simulación y documentación", "Todas las tareas del proyecto: sistema CRUD, modelo de simulación, modelos de Vensim, informes, pruebas, despliegue y sustentación"]],
     )
     doc.add_heading("3. Cronograma", 1)
     figura(doc, FIGURAS_DOCS / "gantt.png", 6.5, "Figura 1. Diagrama de Gantt")
@@ -540,7 +561,7 @@ def documento_bitacora():
         ],
     )
     doc.add_heading("5. Bitácora semanal", 1)
-    doc.add_paragraph("Las semanas siguen las fases del cronograma. Ajuste las fechas reales de cada registro si el profesor las pide. Todas las tareas las realizó el único integrante, esteban-nieto.")
+    doc.add_paragraph("Las semanas siguen las fases del cronograma. Ajuste las fechas reales de cada registro si el profesor las pide. Todas las tareas las realizó el único integrante, Gaddiel Esteban Nieto Rojas.")
     tabla(
         doc,
         ["Semana", "Qué se hizo", "Dificultades", "Decisiones"],

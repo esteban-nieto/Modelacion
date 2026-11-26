@@ -4,11 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Turnos en puestos de salud rurales</title>
-  <link rel="stylesheet" href="/static/estilos.css">
+  <link rel="icon" href="/static/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/estilos.css?v=3">
 </head>
 <body>
   <section id="vista-login" class="login">
     <form id="form-login" class="tarjeta" novalidate>
+      <img src="/static/logo.svg" alt="" width="56" height="56" class="logo">
       <h1>Turnos de salud rural</h1>
       <label>Correo
         <input type="email" name="correo" required autocomplete="username">
@@ -23,7 +25,9 @@
 
   <div id="vista-app" hidden>
     <header class="barra">
+      <img src="/static/logo.svg" alt="" width="32" height="32" class="logo-barra">
       <strong>Turnos de salud rural</strong>
+      <button id="abrir-menu" type="button" class="secundario" aria-expanded="false" aria-controls="menu">Menú</button>
       <nav id="menu" aria-label="Secciones"></nav>
       <span id="usuario"></span>
       <button id="salir" type="button" class="secundario">Salir</button>
@@ -46,6 +50,6 @@
     </form>
   </dialog>
 
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v=2"></script>
 </body>
 </html>

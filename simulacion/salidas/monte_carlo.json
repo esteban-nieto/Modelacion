@@ -11,25 +11,25 @@
     "umbral_espera_min": 30
   },
   "sistema_actual": {
-    "p5": 6.35,
-    "p50": 19.32,
-    "p90": 54.89,
-    "p95": 79.54,
-    "p99": 149.44,
-    "media": 27.75,
-    "desviacion": 27.72,
-    "probabilidad_superar_umbral": 0.2753,
-    "pacientes_sin_atender_por_dia": 1.892
+    "p5": 5.69,
+    "p50": 17.29,
+    "p90": 49.9,
+    "p95": 74.85,
+    "p99": 155.36,
+    "media": 25.64,
+    "desviacion": 28.03,
+    "probabilidad_superar_umbral": 0.2339,
+    "pacientes_sin_atender_por_dia": 1.95
   },
   "fila_unica": {
-    "p5": 3.49,
-    "p50": 12.39,
-    "p90": 46.53,
-    "p95": 77.07,
-    "p99": 151.88,
-    "media": 21.69,
-    "desviacion": 28.51,
-    "probabilidad_superar_umbral": 0.177,
-    "pacientes_sin_atender_por_dia": 1.851
+    "p5": 3.13,
+    "p50": 11.0,
+    "p90": 41.44,
+    "p95": 69.22,
+    "p99": 138.51,
+    "media": 19.43,
+    "desviacion": 26.1,
+    "probabilidad_superar_umbral": 0.1496,
+    "pacientes_sin_atender_por_dia": 1.792
   }
 }

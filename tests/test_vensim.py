@@ -23,3 +23,13 @@ def test_mas_demanda_genera_mas_cola(modelo):
     base = modelo.run(params={"Factor de demanda": 1.0}, return_columns=["Cola de espera"])["Cola de espera"].max()
     alta = modelo.run(params={"Factor de demanda": 1.5}, return_columns=["Cola de espera"])["Cola de espera"].max()
     assert alta > base
+
+
+def test_validacion_con_datos_no_usados_en_la_calibracion():
+    import sys
+
+    sys.path.insert(0, str(MODELO.parent))
+    import correr_vensim
+
+    resultado = correr_vensim.validar()
+    assert abs(resultado["error_relativo_pct"]) < 5, resultado

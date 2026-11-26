@@ -1,0 +1,249 @@
+{UTF-8}
+Cola de espera= INTEG(Llegadas-Inicio de atencion-Abandonos, 0)
+	~	pacientes
+	~	Pacientes esperando turno
+	|
+
+En atencion= INTEG(Inicio de atencion-Fin de atencion, 0)
+	~	pacientes
+	~	Pacientes siendo atendidos
+	|
+
+Atendidos= INTEG(Fin de atencion, 0)
+	~	pacientes
+	~	Pacientes atendidos en la jornada
+	|
+
+Abandonos acumulados= INTEG(Abandonos, 0)
+	~	pacientes
+	~	Pacientes que se retiran sin atencion
+	|
+
+Confianza comunitaria= INTEG(Ganancia de confianza-Perdida de confianza, 0.75)
+	~	Dmnl
+	~	Confianza de la comunidad en el puesto de salud
+	|
+
+Llegadas= IF THEN ELSE(Time<Duracion de jornada, Tasa base de llegadas*Factor de demanda*Efecto de la confianza, 0)
+	~	pacientes/Hora
+	~	Llegada de pacientes durante la jornada
+	|
+
+Inicio de atencion= MIN(Cola de espera/TIME STEP, Profesionales libres/TIME STEP)
+	~	pacientes/Hora
+	~	Pacientes que pasan a consulta
+	|
+
+Fin de atencion= En atencion/Duracion de atencion
+	~	pacientes/Hora
+	~	Pacientes que terminan su consulta
+	|
+
+Abandonos= Cola de espera*Fraccion de abandono
+	~	pacientes/Hora
+	~	Pacientes que se retiran por la espera
+	|
+
+Ganancia de confianza= Fin de atencion*Efecto por atencion
+	~	1/Hora
+	~	La atencion oportuna aumenta la confianza
+	|
+
+Perdida de confianza= Abandonos*Efecto por abandono+MAX(Tiempo de espera estimado-Tolerancia de espera, 0)*Efecto por espera larga
+	~	1/Hora
+	~	Abandonos y esperas largas reducen la confianza
+	|
+
+Efecto de la confianza= 0.4+0.8*MAX(0, MIN(1, Confianza comunitaria))
+	~	Dmnl
+	~	Factor de demanda segun la confianza
+	|
+
+Profesionales libres= MAX(Profesionales-En atencion, 0)
+	~	profesionales
+	~	Profesionales sin paciente
+	|
+
+Capacidad de atencion= Profesionales/Duracion de atencion
+	~	pacientes/Hora
+	~	Pacientes que el puesto puede atender por hora
+	|
+
+Tiempo de espera estimado= Cola de espera/Capacidad de atencion
+	~	Hora
+	~	Espera esperada para quien llega
+	|
+
+Fraccion de abandono= MIN(0.5, Sensibilidad al abandono*Tiempo de espera estimado)
+	~	1/Hora
+	~	Proporcion de la cola que se retira por hora
+	|
+
+Tasa base de llegadas= 7.503
+	~	pacientes/Hora
+	~	Llegadas por hora con confianza media (calibrado con 4256 citas)
+	|
+
+Factor de demanda= 1
+	~	Dmnl
+	~	Multiplicador para probar escenarios de demanda
+	|
+
+Duracion de jornada= 9
+	~	Hora
+	~	Horas en que se reciben pacientes
+	|
+
+Profesionales= 4
+	~	profesionales
+	~	Profesionales de salud disponibles (calibrado con 4256 citas)
+	|
+
+Duracion de atencion= 0.3008
+	~	Hora
+	~	Duracion media de una consulta (calibrado con 4256 citas)
+	|
+
+Efecto por atencion= 0.002
+	~	Dmnl
+	~	Confianza ganada por paciente atendido
+	|
+
+Efecto por abandono= 0.01
+	~	Dmnl
+	~	Confianza perdida por abandono
+	|
+
+Tolerancia de espera= 0.5
+	~	Hora
+	~	Espera aceptada por la comunidad
+	|
+
+Efecto por espera larga= 0.05
+	~	1/Hora
+	~	Confianza perdida por esperas superiores a la tolerancia
+	|
+
+Sensibilidad al abandono= 0.1
+	~	1/Hora/Hora
+	~	Que tan rapido abandonan los pacientes al esperar
+	|
+
+FINAL TIME= 12
+	~	Hora
+	~	Parametro de control de la simulacion
+	|
+
+INITIAL TIME= 0
+	~	Hora
+	~	Parametro de control de la simulacion
+	|
+
+TIME STEP= 0.0625
+	~	Hora
+	~	Parametro de control de la simulacion
+	|
+
+SAVEPER= TIME STEP
+	~	Hora
+	~	Frecuencia de registro
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Flujos y niveles
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Cola de espera,400,300,40,20,3,3,0,0,0,0,0,0
+10,2,En atencion,650,300,40,20,3,3,0,0,0,0,0,0
+10,3,Atendidos,900,300,40,20,3,3,0,0,0,0,0,0
+10,4,Abandonos acumulados,400,540,40,20,3,3,0,0,0,0,0,0
+10,5,Confianza comunitaria,400,100,40,20,3,3,0,0,0,0,0,0
+10,6,Efecto de la confianza,300,200,40,20,8,3,0,0,0,0,0,0
+10,7,Profesionales libres,650,420,40,20,8,3,0,0,0,0,0,0
+10,8,Capacidad de atencion,760,480,40,20,8,3,0,0,0,0,0,0
+10,9,Tiempo de espera estimado,560,540,40,20,8,3,0,0,0,0,0,0
+10,10,Fraccion de abandono,520,440,40,20,8,3,0,0,0,0,0,0
+10,11,Tasa base de llegadas,130,220,40,20,8,3,0,0,0,0,0,0
+10,12,Factor de demanda,130,160,40,20,8,3,0,0,0,0,0,0
+10,13,Duracion de jornada,130,380,40,20,8,3,0,0,0,0,0,0
+10,14,Profesionales,650,180,40,20,8,3,0,0,0,0,0,0
+10,15,Duracion de atencion,860,420,40,20,8,3,0,0,0,0,0,0
+10,16,Efecto por atencion,230,30,40,20,8,3,0,0,0,0,0,0
+10,17,Efecto por abandono,560,30,40,20,8,3,0,0,0,0,0,0
+10,18,Tolerancia de espera,700,100,40,20,8,3,0,0,0,0,0,0
+10,19,Efecto por espera larga,640,200,40,20,8,3,0,0,0,0,0,0
+10,20,Sensibilidad al abandono,400,480,40,20,8,3,0,0,0,0,0,0
+11,21,48,300,300,6,8,34,3,0,0,1,0,0,0
+10,22,Llegadas,300,325,40,11,40,3,0,0,-1,0,0,0
+12,23,48,200,300,10,8,0,3,0,0,-1,0,0,0
+1,24,23,21,100,0,0,22,0,0,0,-1--1--1,,1|(250,300)|
+1,25,21,1,4,0,0,22,0,0,0,-1--1--1,,1|(350,300)|
+11,26,48,525,300,6,8,34,3,0,0,1,0,0,0
+10,27,Inicio de atencion,525,325,40,11,40,3,0,0,-1,0,0,0
+1,28,1,26,100,0,0,22,0,0,0,-1--1--1,,1|(462,300)|
+1,29,26,2,4,0,0,22,0,0,0,-1--1--1,,1|(588,300)|
+11,30,48,775,300,6,8,34,3,0,0,1,0,0,0
+10,31,Fin de atencion,775,325,40,11,40,3,0,0,-1,0,0,0
+1,32,2,30,100,0,0,22,0,0,0,-1--1--1,,1|(712,300)|
+1,33,30,3,4,0,0,22,0,0,0,-1--1--1,,1|(838,300)|
+11,34,48,400,420,6,8,34,3,0,0,1,0,0,0
+10,35,Abandonos,400,445,40,11,40,3,0,0,-1,0,0,0
+1,36,1,34,100,0,0,22,0,0,0,-1--1--1,,1|(400,360)|
+1,37,34,4,4,0,0,22,0,0,0,-1--1--1,,1|(400,480)|
+11,38,48,300,100,6,8,34,3,0,0,1,0,0,0
+10,39,Ganancia de confianza,300,125,40,11,40,3,0,0,-1,0,0,0
+12,40,48,200,100,10,8,0,3,0,0,-1,0,0,0
+1,41,40,38,100,0,0,22,0,0,0,-1--1--1,,1|(250,100)|
+1,42,38,5,4,0,0,22,0,0,0,-1--1--1,,1|(350,100)|
+11,43,48,500,100,6,8,34,3,0,0,1,0,0,0
+10,44,Perdida de confianza,500,125,40,11,40,3,0,0,-1,0,0,0
+1,45,5,43,100,0,0,22,0,0,0,-1--1--1,,1|(450,100)|
+12,46,48,600,100,10,8,0,3,0,0,-1,0,0,0
+1,47,43,46,4,0,0,22,0,0,0,-1--1--1,,1|(550,100)|
+1,48,6,21,0,0,0,0,0,192,0,-1--1--1,,1|(300,250)|
+1,49,11,21,0,0,0,0,0,192,0,-1--1--1,,1|(215,260)|
+1,50,13,21,0,0,0,0,0,192,0,-1--1--1,,1|(215,340)|
+1,51,12,21,0,0,0,0,0,192,0,-1--1--1,,1|(215,230)|
+1,52,7,26,0,0,0,0,0,192,0,-1--1--1,,1|(588,360)|
+1,53,1,26,0,0,0,0,0,192,0,-1--1--1,,1|(462,300)|
+1,54,15,30,0,0,0,0,0,192,0,-1--1--1,,1|(818,360)|
+1,55,2,30,0,0,0,0,0,192,0,-1--1--1,,1|(712,300)|
+1,56,10,34,0,0,0,0,0,192,0,-1--1--1,,1|(460,430)|
+1,57,1,34,0,0,0,0,0,192,0,-1--1--1,,1|(400,360)|
+1,58,16,38,0,0,0,0,0,192,0,-1--1--1,,1|(265,65)|
+1,59,31,38,0,0,0,0,0,192,0,-1--1--1,,1|(538,212)|
+1,60,9,43,0,0,0,0,0,192,0,-1--1--1,,1|(530,320)|
+1,61,19,43,0,0,0,0,0,192,0,-1--1--1,,1|(570,150)|
+1,62,18,43,0,0,0,0,0,192,0,-1--1--1,,1|(600,100)|
+1,63,17,43,0,0,0,0,0,192,0,-1--1--1,,1|(530,65)|
+1,64,35,43,0,0,0,0,0,192,0,-1--1--1,,1|(450,272)|
+1,65,5,6,0,0,0,0,0,192,0,-1--1--1,,1|(350,150)|
+1,66,14,7,0,0,0,0,0,192,0,-1--1--1,,1|(650,300)|
+1,67,2,7,0,0,0,0,0,192,0,-1--1--1,,1|(650,360)|
+1,68,15,8,0,0,0,0,0,192,0,-1--1--1,,1|(810,450)|
+1,69,14,8,0,0,0,0,0,192,0,-1--1--1,,1|(705,330)|
+1,70,8,9,0,0,0,0,0,192,0,-1--1--1,,1|(660,510)|
+1,71,1,9,0,0,0,0,0,192,0,-1--1--1,,1|(480,420)|
+1,72,9,10,0,0,0,0,0,192,0,-1--1--1,,1|(540,490)|
+1,73,20,10,0,0,0,0,0,192,0,-1--1--1,,1|(460,460)|
+///---\\\
+:L<%^E!@
+1:Current.vdf
+9:Current
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:Cola de espera
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+42:1
+24:0
+25:12
+26:12

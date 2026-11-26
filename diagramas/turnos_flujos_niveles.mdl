@@ -79,9 +79,9 @@ Fraccion de abandono= MIN(0.5, Sensibilidad al abandono*Tiempo de espera estimad
 	~	Proporcion de la cola que se retira por hora
 	|
 
-Tasa base de llegadas= 8.4
+Tasa base de llegadas= 7.503
 	~	pacientes/Hora
-	~	Llegadas por hora con confianza media
+	~	Llegadas por hora con confianza media (calibrado con 4256 citas)
 	|
 
 Factor de demanda= 1
@@ -96,12 +96,12 @@ Duracion de jornada= 9
 
 Profesionales= 4
 	~	profesionales
-	~	Profesionales de salud disponibles
+	~	Profesionales de salud disponibles (calibrado con 4256 citas)
 	|
 
-Duracion de atencion= 0.29
+Duracion de atencion= 0.3008
 	~	Hora
-	~	Duracion media de una consulta
+	~	Duracion media de una consulta (calibrado con 4256 citas)
 	|
 
 Efecto por atencion= 0.002

@@ -1,13 +1,23 @@
 from math import ceil
 
+from fastapi import HTTPException
 from sqlalchemy import func, or_, select
 
 
 def convertir(columna, valor):
+    """Convierte el valor de un filtro al tipo de la columna.
+
+    Si el valor no se puede convertir, responde 422 con un mensaje claro en lugar de
+    ignorar el filtro en silencio. Los tipos sin conversión conocida pasan como texto.
+    """
     try:
-        return columna.type.python_type(valor)
-    except (ValueError, TypeError, NotImplementedError):
+        tipo = columna.type.python_type
+    except NotImplementedError:
         return valor
+    try:
+        return tipo(valor)
+    except (ValueError, TypeError):
+        raise HTTPException(422, f"Valor no válido para el filtro '{columna.key}': {valor!r}")
 
 
 def listar(db, modelo, filtros, busqueda, campos_busqueda, orden, direccion, pagina, tamano):
