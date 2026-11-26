@@ -13,3 +13,6 @@ diagramas/turnos_flujos_niveles.py
 *.vdfx
 *.3vmfx
 tools/
+
+# Ficha con datos personales para el registro en el RNA (no se versiona)
+docs/entregables_fuentes/Ficha_registro_software_RNA.docx
