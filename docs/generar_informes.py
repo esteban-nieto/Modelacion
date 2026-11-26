@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Inches, Pt
+from docx.shared import RGBColor, Inches, Pt
 
 RAIZ = Path(__file__).resolve().parent.parent
 SALIDAS = RAIZ / "simulacion" / "salidas"
@@ -31,6 +31,8 @@ def documento(titulo, subtitulo):
     estilo = doc.styles["Normal"]
     estilo.font.name = "Times New Roman"
     estilo.font.size = Pt(12)
+    for nombre in ("Title", "Heading 1", "Heading 2", "Heading 3"):
+        doc.styles[nombre].font.color.rgb = RGBColor(0, 0, 0)
     doc.add_heading(titulo, 0)
     parrafo = doc.add_paragraph(subtitulo)
     parrafo.alignment = WD_ALIGN_PARAGRAPH.LEFT

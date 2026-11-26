@@ -1,0 +1,4 @@
+NAME                      SERVICE      STATUS                    PORTS
+modelacion-api-1          api          Up 19 seconds             8000/tcp
+modelacion-base_datos-1   base_datos   Up 25 seconds (healthy)   5432/tcp
+modelacion-proxy-1        proxy        Up 17 seconds             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp, 0.0.0.0:8443->443/tcp, [::]:8443->443/tcp
