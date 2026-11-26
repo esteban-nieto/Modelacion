@@ -72,7 +72,7 @@ class Jornada:
             duracion = muestreo_servicio.siguiente() * self.configuracion.factor_servicio
             yield self.entorno.timeout(duracion)
         self.minutos_atencion[servicio] += duracion
-        self.registros.append((servicio, prioritario, espera, duracion))
+        self.registros.append((servicio, prioritario, espera, duracion, llegada))
 
     def llegadas(self, servicio):
         especificacion = self.parametros[servicio]

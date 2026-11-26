@@ -23,7 +23,13 @@ function crear(etiqueta, atributos = {}, ...hijos) {
 function mensajeDeError(cuerpo) {
   if (!cuerpo || !cuerpo.detail) return "No se pudo completar la operación";
   if (typeof cuerpo.detail === "string") return cuerpo.detail;
-  return cuerpo.detail.map((e) => `${e.loc.slice(1).join(".")}: ${e.msg.replace("Value error, ", "")}`).join(" | ");
+  return cuerpo.detail
+    .map((e) => {
+      const campo = e.loc.slice(1).join(".");
+      const mensaje = e.msg.replace("Value error, ", "");
+      return campo ? `${campo}: ${mensaje}` : mensaje;
+    })
+    .join(" | ");
 }
 
 async function api(ruta, { metodo = "GET", cuerpo, crudo = false } = {}) {

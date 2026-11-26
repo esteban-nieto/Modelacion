@@ -1,0 +1,19 @@
+{
+  "metodo": "Espera media por hora de llegada, promedio de réplicas y jornadas",
+  "replicas": 30,
+  "jornadas_por_replica": 20,
+  "medias_por_hora_min": {
+    "8:00": 6.72,
+    "9:00": 12.22,
+    "10:00": 14.13,
+    "11:00": 16.01,
+    "12:00": 16.41,
+    "13:00": 16.92,
+    "14:00": 17.73,
+    "15:00": 17.55,
+    "16:00": 17.9
+  },
+  "primera_hora_vs_resto_t": -27.055,
+  "primera_hora_vs_resto_p": 8.859443602623663e-134,
+  "conclusion": "La espera sube durante la jornada y se estabiliza hacia mediodía. Ese transitorio es el comportamiento real de un puesto que abre vacío a las 8:00, no un artefacto de arranque. Descartar horas iniciales subestimaría la espera. Por eso el calentamiento es 0 minutos: la métrica de interés es la jornada completa desde la apertura, y la validación contra el CRUD (escenarios.validar) usa esa misma definición."
+}

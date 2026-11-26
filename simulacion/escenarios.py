@@ -177,6 +177,7 @@ def ejecutar():
             "replicas": REPLICAS,
             "jornadas_por_replica": JORNADAS_POR_REPLICA,
             "calentamiento_min": 0,
+            "calentamiento_justificacion": "Cada jornada inicia vacía a las 8:00 y es horizonte finito; el transitorio intradía es real. Ver simulacion/salidas/calentamiento.json (python -m simulacion.calentamiento).",
             "nivel_confianza": NIVEL,
             "semilla": SEMILLA,
         },
