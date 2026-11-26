@@ -16,7 +16,7 @@ LOCALES = [
     ("Bogotá, 2017", "Hernández Chinchilla et al.", "Urgencias del Hospital La Samaritana", "Simulación discreta del flujo de pacientes",
      "Analiza el flujo de pacientes y plantea escenarios para mejorar la atención."),
     ("Bogotá, 2022", "Aguiar et al.", "Sistema de emergencias médicas", "Simulación más algoritmos genéticos",
-     "Estima cuántas ambulancias se necesitan para responder en ocho minutos."),
+     "Estima cuántas ambulancias se necesitan para responder a tiempo."),
 ]
 GLOBALES = [
     ("Singapur y Chengdu, 2021", "Xie et al.", "Dos hospitales grandes", "Análisis con datos reales y simulación",

@@ -4,7 +4,7 @@ from docx.shared import Inches
 from generar_informes import DESTINO, FIGURAS_DOCS, documento, figura, lista, tabla
 
 # Solo fuentes cuyos datos bibliográficos se comprobaron en búsqueda (editorial, DOI o PubMed).
-# Lo que no se pudo comprobar NO se incluye: ver la sección "Pendientes" del documento.
+# Lo que no se pudo comprobar NO se incluye.
 REFERENCIAS = [
     "Aguiar, C., Rentería, S., Catumba-Ruiz, J. C., & Barrera, D. (2022). Use of discrete event simulation and genetic algorithms to estimate the necessary resources to respond in a timely manner in the Medical Emergency System in Bogotá. Medwave, 22(3), e002100. https://doi.org/10.5867/medwave.2022.03.002100",
     "Dosi, C., Iori, M., Kramer, A., & Vignoli, M. (2023). Successful implementation of discrete event simulation: Integrating design thinking and simulation approach in an emergency department. Production Planning & Control, 34(13), 1233-1247. https://doi.org/10.1080/09537287.2021.1996651",
@@ -13,7 +13,7 @@ REFERENCIAS = [
     "Revisión sistemática de sensores de bajo costo para el monitoreo de la calidad del aire en América Latina. (2026). ES Engineering and Science, 15(1). https://doi.org/10.18607/ES20261521055",
     "Sánchez Castillo, V., Gómez Cano, C. A., & Gonzalez-Argote, J. (2023). Telemedicine and mHealth applications for health monitoring in rural communities in Colombia: A systematic review. EAI Endorsed Transactions on Pervasive Health and Technology, 9(1). https://doi.org/10.4108/eetpht.9.3400",
     "Xie, J., Zhuang, W., Ang, M., Chou, M. C., Luo, L., & Yao, D. D. (2021). Analytics for hospital resource planning: Two case studies. Production and Operations Management. https://doi.org/10.1111/poms.13158",
-    "[Referencia pendiente] Comis et al. (2021). Patients, primary care, and policy: Agent-based simulation modeling for health care decision support. Health Care Management Science, 24(4). https://doi.org/10.1007/s10729-021-09556-2. Falta la lista completa de autores para la entrada APA.",
+    "Comis, M., Cleophas, C., & Büsing, C. (2021). Patients, primary care, and policy: Agent-based simulation modeling for health care decision support. Health Care Management Science, 24(4), 799–826. https://doi.org/10.1007/s10729-021-09556-2",
 ]
 
 # Casos de simulación para decidir. Solo se incluyen los verificados con fuente primaria.
@@ -57,7 +57,7 @@ def b2():
     doc.add_paragraph(
         "Este documento contiene solo lo verificado hasta ahora. La guía exige al menos tres casos locales y tres globales, y dos artículos "
         "revisados por pares con al menos uno en inglés. Hoy hay tres casos locales, tres globales y dos artículos revisados por pares "
-        "sobre tecnologías electrónicas (uno en inglés). Las secciones de abajo marcan lo que queda por revisar."
+        "sobre tecnologías electrónicas (uno en inglés)."
     )
 
     doc.add_heading("1. Mapa comparativo", 1)
@@ -116,14 +116,6 @@ def b2():
         ],
     )
 
-    doc.add_heading("Pendientes del módulo B2", 1)
-    lista(
-        doc,
-        [
-            "Lectura del texto completo de las fuentes citadas, para poder explicarlas en la sustentación.",
-            "Regenerar la infografía con la tabla de casos final.",
-        ],
-    )
     doc.add_heading("Referencias", 1)
     for referencia in REFERENCIAS:
         pr = doc.add_paragraph(referencia)

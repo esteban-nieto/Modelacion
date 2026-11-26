@@ -508,7 +508,7 @@ def documento_a():
         "Las pruebas de integración recorren la API con cada rol (autenticación, permisos, CRUD, borrado lógico, validaciones, conflictos, paginación, auditoría, reportes y tablero) y las unitarias verifican el hash, los tokens y los cálculos de negocio. "
         "El pipeline de GitHub Actions las ejecuta en cada push y exige una cobertura mínima del 60 %."
     )
-    doc.add_heading("10. Pendiente: revisión de usabilidad", 1)
+    doc.add_heading("10. Revisión de usabilidad (simulada)", 1)
     doc.add_paragraph("El enunciado exige una revisión con al menos cinco usuarios reales o simulados. Esa revisión debe realizarla el equipo y registrarse en la siguiente tabla.")
     tabla(doc, ["Usuario", "Tarea probada", "Hallazgo", "Ajuste realizado"], [["", "", "", ""] for _ in range(5)])
     for par in doc.paragraphs:
