@@ -8,3 +8,5 @@ Archivos incluidos:
 - docs/exposicion/capturas/01_login.png
 - docs/exposicion/capturas/02_tablero.png
 - docs/exposicion/evidencias/30_docker_ps.png
+
+**Actualización:** desplegado en Railway: https://modelacion-api-production.up.railway.app (ver Enlace_sistema_desplegado.docx).
