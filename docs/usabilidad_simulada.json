@@ -1,0 +1,236 @@
+{
+  "simulado": true,
+  "nota": "Recorrido automatizado por perfiles; no reemplaza pruebas con usuarios reales.",
+  "usuarios": [
+    {
+      "perfil": {
+        "id": "U1",
+        "rol": "administrador",
+        "tecnica": 5,
+        "error_captura": false
+      },
+      "tareas": [
+        {
+          "tarea": "Iniciar sesión",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Buscar paciente por documento",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Registrar una cita nueva",
+          "codigo": 201,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Ver la cola de atención",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Descargar un reporte en CSV",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Interpretar el tablero real vs. simulado",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        }
+      ]
+    },
+    {
+      "perfil": {
+        "id": "U2",
+        "rol": "operador",
+        "tecnica": 4,
+        "error_captura": false
+      },
+      "tareas": [
+        {
+          "tarea": "Iniciar sesión",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Buscar paciente por documento",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Registrar una cita nueva",
+          "codigo": 201,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Ver la cola de atención",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Descargar un reporte en CSV",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Interpretar el tablero real vs. simulado",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        }
+      ]
+    },
+    {
+      "perfil": {
+        "id": "U3",
+        "rol": "consulta",
+        "tecnica": 2,
+        "error_captura": false
+      },
+      "tareas": [
+        {
+          "tarea": "Iniciar sesión",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Buscar paciente por documento",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Registrar una cita nueva",
+          "codigo": 403,
+          "resultado": "bloqueado por rol",
+          "mensaje": "{\"detail\":\"No tiene permisos para esta operación\"}"
+        },
+        {
+          "tarea": "Ver la cola de atención",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Descargar un reporte en CSV",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Interpretar el tablero real vs. simulado",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        }
+      ]
+    },
+    {
+      "perfil": {
+        "id": "U4",
+        "rol": "consulta",
+        "tecnica": 3,
+        "error_captura": false
+      },
+      "tareas": [
+        {
+          "tarea": "Iniciar sesión",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Buscar paciente por documento",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Registrar una cita nueva",
+          "codigo": 403,
+          "resultado": "bloqueado por rol",
+          "mensaje": "{\"detail\":\"No tiene permisos para esta operación\"}"
+        },
+        {
+          "tarea": "Ver la cola de atención",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Descargar un reporte en CSV",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Interpretar el tablero real vs. simulado",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        }
+      ]
+    },
+    {
+      "perfil": {
+        "id": "U5",
+        "rol": "operador",
+        "tecnica": 1,
+        "error_captura": true
+      },
+      "tareas": [
+        {
+          "tarea": "Iniciar sesión",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Buscar paciente por documento",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Registrar cita (captura con error)",
+          "codigo": 422,
+          "resultado": "con ayuda",
+          "mensaje": "{\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, El inicio de atención no puede ser anterior a la llegada\",\"input\":{\"paciente_id\":1,\"profesio"
+        },
+        {
+          "tarea": "Ver la cola de atención",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Descargar un reporte en CSV",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        },
+        {
+          "tarea": "Interpretar el tablero real vs. simulado",
+          "codigo": 200,
+          "resultado": "completada",
+          "mensaje": ""
+        }
+      ]
+    }
+  ]
+}
