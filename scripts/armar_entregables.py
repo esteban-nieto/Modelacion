@@ -18,7 +18,7 @@ DESTINO = RAIZ / "docs" / "entregables_finales"
 
 ENTREGABLES = [
     ("01_repositorio_git", "Repositorio Git con código, historial, README, scripts, Docker, pruebas y pipeline de CI",
-     [".github/workflows/ci.yml", "Dockerfile", "docker-compose.yml", "README.md", "pytest.ini", "requirements.txt", "requirements-dev.txt"],
+     [".github/workflows/ci.yml", "Dockerfile", "docker-compose.yml", "README.md", "pytest.ini", "requirements.txt", "requirements-dev.txt", "docs/entregables_fuentes/Enlace_repositorio_git.docx"],
      "Entregado",
      "El repositorio está en https://github.com/esteban-nieto/Modelacion, rama principal main."),
     ("02_sistema_desplegado", "Sistema desplegado y accesible (URL) o ejecutable con un solo comando documentado",
