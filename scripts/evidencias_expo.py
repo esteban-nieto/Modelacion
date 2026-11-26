@@ -77,7 +77,7 @@ def capturas_app():
         entrar("administrador@saludrural.co", "Admin12345")
         ir("Pacientes")
         pg.screenshot(path=str(SALIDA / "20_crud_pacientes.png"))
-        pg.fill("input[type=search]", "Paciente")
+        pg.fill("input[type=search]", "Ana Gómez")
         pg.keyboard.press("Enter")
         pg.wait_for_timeout(900)
         pg.screenshot(path=str(SALIDA / "21_busqueda_pacientes.png"))

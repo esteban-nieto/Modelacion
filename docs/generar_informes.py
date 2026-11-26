@@ -90,6 +90,11 @@ def informe_b():
         "El mismo proceso lo gestiona el sistema CRUD, que registra cada cita con su hora de llegada, inicio y fin de atención."
     )
     doc.add_paragraph(
+        "La simulación se ha usado para decidir recursos de urgencias y de emergencias en Colombia y en otros países "
+        "(Medina Monterrosa y Arrieta-Canchila, 2013; Aguiar et al., 2022; Hernández Chinchilla et al., 2017; Xie et al., 2021; Dosi et al., 2023). "
+        "En el contexto rural colombiano, las aplicaciones electrónicas de telemedicina y mHealth se estudian para el monitoreo de la salud (Sánchez Castillo et al., 2023)."
+    )
+    doc.add_paragraph(
         "Los datos del puesto de salud usados en este informe son sintéticos: se generaron con una semilla fija a partir de distribuciones conocidas para 60 jornadas hábiles, "
         "porque no se dispone de registros reales anonimizados. El procedimiento es el mismo que se seguiría con datos reales: exportar el histórico desde el CRUD, ajustar distribuciones, simular y decidir. "
         "Las conclusiones numéricas describen el modelo y no deben presentarse como mediciones de un puesto real."
@@ -115,14 +120,14 @@ def informe_b():
         ],
     )
     doc.add_heading("2.2 Diagramas estructurados", 2)
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 6.3, "Figura 1. Diagrama de flujo del proceso")
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 6.3, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujo_proceso.png", 4.5, "Figura 1. Diagrama de flujo del proceso")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_causal.png", 4.5, "Figura 2. Diagrama causal con bucles de refuerzo (R) y balanceo (B)")
     doc.add_paragraph(
         "El bucle R1 refuerza la demanda: más pacientes atendidos aumentan la confianza de la comunidad y, con ella, las llegadas. "
         "Los bucles B1, B2 y B3 la limitan: una cola larga eleva el tiempo de espera, que provoca abandonos y reduce la confianza, y a la vez una cola mayor aumenta la atención. "
         "La capacidad de los profesionales actúa sobre el tiempo de espera y es la palanca principal de decisión."
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 6.5, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
+    figura(doc, FIGURAS_DIAGRAMAS / "diagrama_flujos_niveles.png", 4.5, "Figura 3. Diagrama de flujos y niveles (Vensim, archivo turnos_flujos_niveles.mdl)")
     vensim = pd.read_csv(RAIZ / "diagramas" / "resultados_vensim.csv")
     doc.add_paragraph(
         "El modelo de flujos y niveles agrega los tres servicios en una sola cola, por lo que describe la tendencia del sistema y no sus tiempos de espera por servicio. "
@@ -133,7 +138,7 @@ def informe_b():
         ["Escenario", "Atendidos", "Abandonos", "Cola máxima", "Espera máx. (min)", "Confianza final"],
         [[r.escenario, r.atendidos, r.abandonos, r.cola_maxima, r.espera_maxima_min, r.confianza_final] for r in vensim.itertuples()],
     )
-    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 6.3, "Figura 4. Árbol de problemas")
+    figura(doc, FIGURAS_DIAGRAMAS / "arbol_problemas.png", 4.5, "Figura 4. Árbol de problemas")
     doc.add_heading("2.3 Supuestos, simplificaciones y limitaciones", 2)
     lista(
         doc,
@@ -212,7 +217,7 @@ def informe_b():
         ],
         "Media [IC 95 %]",
     )
-    figura(doc, SALIDAS / "espera_escenarios.png", 6.0, "Figura 5. Espera media por escenario")
+    figura(doc, SALIDAS / "espera_escenarios.png", 4.5, "Figura 5. Espera media por escenario")
     tabla(
         doc,
         ["Escenario frente al base", "Diferencia en espera media (min)", "Diferencia en espera prioritarios (min)"],
@@ -263,7 +268,7 @@ def informe_b():
             ["Pacientes sin atender por día", actual["pacientes_sin_atender_por_dia"], propuesta["pacientes_sin_atender_por_dia"]],
         ],
     )
-    figura(doc, SALIDAS / "monte_carlo_histograma.png", 6.0, "Figura 6. Distribución de la espera media diaria")
+    figura(doc, SALIDAS / "monte_carlo_histograma.png", 4.5, "Figura 6. Distribución de la espera media diaria")
     doc.add_paragraph(
         f"Interpretación: en el 90 % de las jornadas del sistema actual la espera media no supera {actual['p90']} minutos, frente a {propuesta['p90']} con fila única. "
         "La cola larga de la distribución (percentil 99) se asocia, según el diseño del ejercicio, con las jornadas en que falta un profesional (no se aisló su efecto por separado), por lo que la fila única no elimina el riesgo de las jornadas críticas; "
@@ -271,6 +276,7 @@ def informe_b():
     )
 
     doc.add_heading("9. Modelo financiero", 1)
+    doc.add_paragraph("El análisis financiero usa los conceptos de flujo de caja, valor presente neto y sensibilidad de Pérez Peña (2019).")
     sup, fu, med = financiero["supuestos"], financiero["fila_unica_con_prioridad"], financiero["medico_adicional"]
     doc.add_paragraph(
         "El beneficio se valora como el tiempo de espera que los pacientes dejan de perder. Los valores monetarios son supuestos del equipo, no cifras verificadas, y deben reemplazarse por datos reales antes de decidir."
@@ -309,7 +315,7 @@ def informe_b():
         "Análisis de sensibilidad univariado del VPN.",
     )
     mc = financiero["monte_carlo_vpn"]
-    figura(doc, SALIDAS / "financiero_vpn.png", 6.0, "Figura 7. Distribución del VPN con 10 000 iteraciones")
+    figura(doc, SALIDAS / "financiero_vpn.png", 4.5, "Figura 7. Distribución del VPN con 10 000 iteraciones")
     doc.add_paragraph(
         f"Con incertidumbre simultánea en las variables, el VPN medio es {pesos(mc['media'])}, con un intervalo entre percentiles 5 y 95 de {pesos(mc['p5'])} a {pesos(mc['p95'])}, "
         f"y probabilidad de VPN positivo de {100 * mc['probabilidad_vpn_positivo']:.1f} %. La variable que más mueve el resultado es el valor asignado al tiempo del paciente, "
@@ -388,10 +394,16 @@ def informe_b():
     )
     doc.add_heading("Referencias", 1)
     for referencia in (
+        "Aguiar, C., Rentería, S., Catumba-Ruiz, J. C., & Barrera, D. (2022). Use of discrete event simulation and genetic algorithms to estimate the necessary resources to respond in a timely manner in the Medical Emergency System in Bogotá. Medwave, 22(3), e002100. https://doi.org/10.5867/medwave.2022.03.002100",
         "Bilbao Alberdi, G. (2010). Ética para ingenieros.",
+        "Dosi, C., Iori, M., Kramer, A., & Vignoli, M. (2023). Successful implementation of discrete event simulation: Integrating design thinking and simulation approach in an emergency department. Production Planning & Control, 34(13), 1233–1247. https://doi.org/10.1080/09537287.2021.1996651",
+        "Hernández Chinchilla, D., Camacho Oliveros, M. Á., & Duarte Forero, E. L. (2017). Análisis del flujo de pacientes en el servicio de urgencias del Hospital Universitario La Samaritana a través de simulación discreta. Avances Investigación en Ingeniería, 14. https://doi.org/10.18041/1794-4953/avances.1.1289",
+        "Medina Monterrosa, Y., & Arrieta-Canchila, K. (2013). Simulación de eventos discretos para optimizar recursos restrictivos del servicio de urgencias de un hospital. Revista Científica Teknos, 13(1), 55–66.",
         "Pérez Peña, R. (2019). Modelación financiera: conceptos y aplicaciones.",
-        "Team SimPy. (s. f.). SimPy: Discrete event simulation for Python. https://simpy.readthedocs.io",
-        "Ventana Systems. (s. f.). Vensim. https://vensim.com",
+        "Sánchez Castillo, V., Gómez Cano, C. A., & Gonzalez-Argote, J. (2023). Telemedicine and mHealth applications for health monitoring in rural communities in Colombia: A systematic review. EAI Endorsed Transactions on Pervasive Health and Technology, 9(1). https://doi.org/10.4108/eetpht.9.3400",
+        "Team SimPy. (s. f.). SimPy: Discrete event simulation for Python (versión 4.1.2) [Software]. https://simpy.readthedocs.io",
+        "Ventana Systems. (s. f.). Vensim PLE (versión 11.0) [Software]. https://vensim.com",
+        "Xie, J., Zhuang, W., Ang, M., Chou, M. C., Luo, L., & Yao, D. D. (2021). Analytics for hospital resource planning: Two case studies. Production and Operations Management. https://doi.org/10.1111/poms.13158",
     ):
         doc.add_paragraph(referencia)
     return doc
@@ -511,7 +523,7 @@ def documento_bitacora():
     tabla(
         doc,
         ["Integrante", "Roles", "Responsabilidades"],
-        [["esteban-nieto", "Líder, desarrollo, simulación y documentación", "Todas las tareas del proyecto: sistema CRUD, modelo de simulación, modelos de Vensim, informes, pruebas, despliegue y sustentación"]],
+        [["Gaddiel Esteban Nieto Rojas", "Líder, desarrollo, simulación y documentación", "Todas las tareas del proyecto: sistema CRUD, modelo de simulación, modelos de Vensim, informes, pruebas, despliegue y sustentación"]],
     )
     doc.add_heading("3. Cronograma", 1)
     figura(doc, FIGURAS_DOCS / "gantt.png", 6.5, "Figura 1. Diagrama de Gantt")
@@ -540,7 +552,7 @@ def documento_bitacora():
         ],
     )
     doc.add_heading("5. Bitácora semanal", 1)
-    doc.add_paragraph("Las semanas siguen las fases del cronograma. Ajuste las fechas reales de cada registro si el profesor las pide. Todas las tareas las realizó el único integrante, esteban-nieto.")
+    doc.add_paragraph("Las semanas siguen las fases del cronograma. Ajuste las fechas reales de cada registro si el profesor las pide. Todas las tareas las realizó el único integrante, Gaddiel Esteban Nieto Rojas.")
     tabla(
         doc,
         ["Semana", "Qué se hizo", "Dificultades", "Decisiones"],

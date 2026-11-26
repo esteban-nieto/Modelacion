@@ -11,26 +11,25 @@ DESTINO = Path(__file__).resolve().parent / "figuras"
 VERDE, AZUL, ROJO, GRIS = "#0b6e4f", "#1d4e89", "#b42318", "#3d4852"
 
 LOCALES = [
-    ("Cartagena, 2013", "Medina y Arrieta", "Urgencias de un hospital", "Eventos discretos y teoría de colas",
-     "El triage operaba al 99 % de ocupación y la espera era de 82 min; se propone un servidor adicional."),
-    ("Bogotá, 2017", "Hernández, Camacho y Duarte", "Urgencias del Hospital La Samaritana", "Simulación discreta y segmentación de pacientes",
-     "Escenarios y estrategias para reducir la estancia, según días de estadía y patología."),
-    ("Hospital público colombiano, 2014", "Gáfaro-Rojas, Mallor-Giménez y Azcárate-Camio", "Consulta externa", "Modelo de simulación de llegadas",
-     "Modelo de llegadas reutilizable en contextos similares para planear la gestión."),
+    ("Cartagena, 2013", "Medina y Arrieta", "Urgencias de un hospital", "Simulación de eventos discretos",
+     "Identifica el recurso restrictivo de urgencias y propone optimizar los recursos de atención."),
+    ("Bogotá, 2017", "Hernández Chinchilla et al.", "Urgencias del Hospital La Samaritana", "Simulación discreta del flujo de pacientes",
+     "Analiza el flujo de pacientes y plantea escenarios para mejorar la atención."),
+    ("Bogotá, 2022", "Aguiar et al.", "Sistema de emergencias médicas", "Simulación más algoritmos genéticos",
+     "Estima cuántas ambulancias se necesitan para responder en ocho minutos."),
 ]
 GLOBALES = [
-    ("Arkansas, EE. UU., 2015", "Lenin et al.", "Clínica de ginecología y obstetricia", "Eventos discretos validados con datos reales",
-     "Citas cada 16 y 19 min y un auxiliar más: espera por proveedor 39,8 % menor."),
-    ("Vacunación COVID-19, 2022", "Hanly et al.", "Centros masivos y consultorios", "Redes de colas estocásticas",
-     "500 a 1400 dosis diarias en centros y 100 a 300 en consultorios; más personal da más robustez."),
-    ("Clínica de vacunación, 2023", "Adacher, Flamini y Naldi", "Clínica con citas programadas", "Simulador de capacidad y personal",
-     "Diseña la capacidad y el personal antes de operar, en vez de dotarlos sin análisis."),
+    ("Singapur y Chengdu, 2021", "Xie et al.", "Dos hospitales grandes", "Análisis con datos reales y simulación",
+     "Planeación de camas y recursos de diagnóstico con datos de dos hospitales."),
+    ("Italia, 2023", "Dosi et al.", "Urgencias de un hospital", "Simulación validada por los gestores",
+     "Un escenario validado por los gestores fue implementado por el servicio."),
+    ("Alemania, 2021", "Comis et al.", "Atención primaria regional", "Modelo de agentes con datos empíricos",
+     "Evalúa políticas de atención primaria con un modelo de agentes."),
 ]
 RELACIONES = [
-    "Todos usan simulación para decidir recursos (personal, citas, servidores) antes de gastar, igual que este proyecto con la fila única y la prioridad.",
-    "Los casos locales se concentran en urgencias y hospitales urbanos; ninguno de los reseñados modela un puesto de salud rural, que es el hueco que cubre este trabajo.",
-    "Los casos globales validan con datos propios (Lenin) o entregan una herramienta abierta (Hanly): una práctica que este proyecto replica con la exportación del CRUD.",
-    "Una revisión de 211 estudios halló que más del 68 % de las aplicaciones atienden unidades individuales (Zhang, 2018): faltan modelos de servicios integrados.",
+    "Los seis casos usan la simulación para decidir recursos (camas, personal, ambulancias, citas) antes de aplicar una medida.",
+    "Los casos locales se concentran en urgencias y emergencias en ciudades; ninguno modela un puesto de salud rural, que es el hueco que cubre este proyecto.",
+    "Los casos globales validan con datos reales o llevan la decisión hasta la implementación: una práctica que este proyecto replica con la exportación del CRUD.",
 ]
 
 
