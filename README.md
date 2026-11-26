@@ -80,3 +80,24 @@ Cada paso lee la salida del anterior y deja sus resultados en `simulacion/salida
 - La interfaz inserta texto con `textContent` y el servidor envía una política `Content-Security-Policy` estricta.
 - Secretos únicamente por variables de entorno.
 - HTTPS mediante el proxy Caddy del `docker-compose.yml`.
+
+## Motores de simulación
+
+El proyecto tiene dos modelos del mismo puesto de salud, con propósitos distintos:
+
+| Modelo | Carpeta | Qué responde | Fuente de parámetros |
+| --- | --- | --- | --- |
+| Eventos discretos (SimPy) | `simulacion/` | Esperas por paciente, escenarios de fila y profesionales, Monte Carlo, financiero | Distribuciones ajustadas a `simulacion/datos/citas_historicas.csv` |
+| Dinámica de sistemas (Vensim) | `diagramas/` | Evolución de la cola, abandono y confianza comunitaria en el tiempo | Calibrados con el mismo CSV (`diagramas/calibrar_vensim.py`) |
+
+El modelo de Vensim se calibra con los primeros 30 días del CRUD y se valida con los últimos 30, que no se usan para calibrar. Para regenerarlo:
+
+```powershell
+.venv\Scripts\python diagramas\calibrar_vensim.py
+.venv\Scripts\python diagramas\generar_vensim.py
+.venv\Scripts\python diagramas\correr_vensim.py
+```
+
+## Salidas regeneradas
+
+Los archivos de `simulacion/salidas/` y `simulacion/datos/` se generan con los scripts de arriba. Con las versiones fijadas en `requirements-dev.txt`, los resultados son reproducibles; si cambia el entorno (por ejemplo, otra versión de numpy o scipy), los números pueden variar en las últimas cifras. Por eso los cambios en esos archivos se revisan como salidas nuevas y no como cambios de código.

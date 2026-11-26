@@ -1,0 +1,40 @@
+{
+  "simulado": true,
+  "respuestas": 5,
+  "puntaje_sus_media": 68.0,
+  "puntaje_sus_desv": 26.1,
+  "puntaje_sus_ic95": [
+    35.6,
+    100.4
+  ],
+  "puntaje_sus_por_persona": {
+    "U1": 100.0,
+    "U2": 77.5,
+    "U3": 57.5,
+    "U4": 75.0,
+    "U5": 30.0
+  },
+  "interpretacion_sus": "en el umbral aceptable (68)",
+  "tareas_completadas_sin_ayuda_pct": {
+    "Iniciar sesión": 100.0,
+    "Buscar paciente por documento": 100.0,
+    "Registrar una cita nueva": 40.0,
+    "Ver la cola de atención": 100.0,
+    "Descargar un reporte en CSV": 100.0,
+    "Interpretar el tablero real vs. simulado": 100.0
+  },
+  "dispositivos": {
+    "Computador": 4,
+    "Celular": 1
+  },
+  "mensajes_claros": {
+    "Sí": 3,
+    "A veces": 2
+  },
+  "hallazgos": [
+    "Las tareas de administrador y operador se completan sin ayuda en el recorrido.",
+    "El rol consulta no puede registrar citas (403). Es un diseño de permisos, pero el usuario no ve por qué: hallazgo de interfaz, se propone ocultar la acción.",
+    "Un error de fechas en la captura se corrige con el mensaje del sistema (con ayuda); el mensaje ya fue corregido en el formulario.",
+    "El tablero requiere explicación para el rol consulta: se propone un texto de ayuda junto a la gráfica."
+  ]
+}

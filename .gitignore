@@ -12,3 +12,4 @@ diagramas/turnos_flujos_niveles.py
 *.vdf
 *.vdfx
 *.3vmfx
+tools/

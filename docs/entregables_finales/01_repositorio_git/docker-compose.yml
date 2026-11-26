@@ -1,0 +1,40 @@
+services:
+  base_datos:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: turnos
+      POSTGRES_USER: turnos
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD}
+    volumes:
+      - datos:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U turnos -d turnos"]
+      interval: 5s
+      retries: 10
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg2://turnos:${POSTGRES_PASSWORD}@base_datos:5432/turnos
+      SECRET_KEY: ${SECRET_KEY:?defina SECRET_KEY}
+      CLAVE_ADMIN: ${CLAVE_ADMIN:-Admin12345}
+      CLAVE_OPERADOR: ${CLAVE_OPERADOR:-Operador12345}
+      CLAVE_CONSULTA: ${CLAVE_CONSULTA:-Consulta12345}
+    depends_on:
+      base_datos:
+        condition: service_healthy
+
+  proxy:
+    image: caddy:2-alpine
+    ports:
+      - "8443:443"
+      - "8080:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_datos:/data
+    depends_on:
+      - api
+
+volumes:
+  datos:
+  caddy_datos:

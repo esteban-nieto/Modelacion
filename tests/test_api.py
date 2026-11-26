@@ -104,3 +104,21 @@ def test_encabezados_de_seguridad(cliente):
     respuesta = cliente.get("/")
     assert respuesta.headers["X-Content-Type-Options"] == "nosniff"
     assert "default-src 'self'" in respuesta.headers["Content-Security-Policy"]
+
+
+def test_filtro_numerico_invalido_responde_422(cliente, entrar):
+    respuesta = cliente.get("/api/citas", params={"paciente_id": "abc"}, headers=entrar("operador"))
+    assert respuesta.status_code == 422
+    assert "paciente_id" in respuesta.text
+
+
+def test_filtro_numerico_valido_funciona(cliente, entrar):
+    respuesta = cliente.get("/api/citas", params={"paciente_id": "1"}, headers=entrar("operador"))
+    assert respuesta.status_code == 200
+
+
+def test_error_de_validacion_en_espanol(cliente, entrar):
+    respuesta = cliente.post("/api/sedes", json={"vereda": "Fagua"}, headers=entrar("administrador"))
+    assert respuesta.status_code == 422
+    detalle = respuesta.json()["detail"]
+    assert any(e["msg"] == "Campo obligatorio" and "nombre" in e["loc"] for e in detalle)

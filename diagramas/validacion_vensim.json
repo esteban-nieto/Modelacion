@@ -1,0 +1,6 @@
+{
+  "atendidas_por_dia_real": 70.73,
+  "atendidas_por_dia_vensim": 70.95,
+  "error_relativo_pct": 0.31,
+  "conclusion": "Diferencia menor al 5 %: el modelo reproduce el volumen real"
+}

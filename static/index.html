@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Turnos en puestos de salud rurales</title>
-  <link rel="stylesheet" href="/static/estilos.css">
+  <link rel="stylesheet" href="/static/estilos.css?v=2">
 </head>
 <body>
   <section id="vista-login" class="login">
@@ -24,6 +24,7 @@
   <div id="vista-app" hidden>
     <header class="barra">
       <strong>Turnos de salud rural</strong>
+      <button id="abrir-menu" type="button" class="secundario" aria-expanded="false" aria-controls="menu">Menú</button>
       <nav id="menu" aria-label="Secciones"></nav>
       <span id="usuario"></span>
       <button id="salir" type="button" class="secundario">Salir</button>
@@ -46,6 +47,6 @@
     </form>
   </dialog>
 
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v=2"></script>
 </body>
 </html>

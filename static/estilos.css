@@ -101,7 +101,19 @@ dialog { border: 1px solid var(--borde); border-radius: 8px; padding: 20px; widt
 dialog::backdrop { background: rgba(0, 0, 0, 0.35); }
 #campos-dialogo { display: grid; gap: 12px; }
 
+#abrir-menu { display: none; }
+
+.grafico { display: grid; gap: 8px; margin: 8px 0 16px; }
+.grafico .fila { display: grid; grid-template-columns: 160px 1fr 80px; gap: 10px; align-items: center; font-size: 14px; }
+.grafico .pista { background: var(--fondo); border-radius: 4px; height: 16px; overflow: hidden; }
+.grafico .relleno { background: var(--primario); height: 100%; }
+.grafico .relleno.simulado { background: var(--suave); }
+
 @media (max-width: 600px) {
   .barra { padding: 8px 12px; }
   main { padding: 12px; }
+  #abrir-menu { display: inline-block; }
+  .barra nav { display: none; flex-direction: column; width: 100%; }
+  .barra.menu-abierto nav { display: flex; }
+  .grafico .fila { grid-template-columns: 110px 1fr 70px; }
 }

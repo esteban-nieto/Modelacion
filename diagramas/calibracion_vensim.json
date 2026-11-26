@@ -1,0 +1,13 @@
+{
+  "fuente": "simulacion/datos/citas_historicas.csv",
+  "protocolo": "calibracion: primeros 30 dias; validacion: ultimos 30 dias",
+  "citas": 4256,
+  "dias_calibracion": 30,
+  "dias_validacion": 30,
+  "Tasa base de llegadas": 7.503,
+  "Duracion de atencion": 0.3008,
+  "Profesionales": 4,
+  "atendidas_por_dia": 71.13,
+  "atendidas_por_dia_validacion": 70.73,
+  "espera_media_real_min": 16.31
+}

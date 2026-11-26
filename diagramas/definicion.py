@@ -62,6 +62,19 @@ CONSTANTES = {
     "Sensibilidad al abandono": {"x": 400, "y": 480, "valor": 0.1, "unidades": "1/Hora/Hora", "nota": "Que tan rapido abandonan los pacientes al esperar"},
 }
 
+# Valores calibrados con los datos del CRUD (ver diagramas/calibrar_vensim.py).
+# Si el archivo no existe, se usan los valores de arriba.
+import json as _json
+from pathlib import Path as _Path
+
+_CALIBRACION = _Path(__file__).resolve().parent / "calibracion_vensim.json"
+if _CALIBRACION.exists():
+    _calibrados = _json.loads(_CALIBRACION.read_text(encoding="utf-8"))
+    for _nombre in CONSTANTES:
+        if _nombre in _calibrados:
+            CONSTANTES[_nombre]["valor"] = _calibrados[_nombre]
+            CONSTANTES[_nombre]["nota"] += f" (calibrado con {_calibrados['citas']} citas)"
+
 CAUSAL = {
     "variables": {
         "Llegadas de pacientes": (160, 250),
